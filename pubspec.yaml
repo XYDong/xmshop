@@ -30,4 +30,9 @@ flutter:
     - family: jokerFont
       fonts:
         - asset: assets/fonts/iconfont.ttf
+#  自定义图片文件
+  assets:
+    - assets/images/xiaomiBanner.png
+    - assets/images/2.0x/xiaomiBanner.png
+    - assets/images/3.0x/xiaomiBanner.png
 

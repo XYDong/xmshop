@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/category_model.dart';
 import 'package:xmshop/app/models/focus_model.dart';
 
 class HomeController extends GetxController {
@@ -10,13 +11,17 @@ class HomeController extends GetxController {
   RxBool flag = false.obs;
   //banner图片 需要定义成响应式数据
   RxList<FocusItemModel> swiperList = <FocusItemModel>[].obs;
+// 首页商品分类列表
+  RxList<CategoryItemModel> categoryList = <CategoryItemModel>[].obs;
   @override
   void onInit() {
     super.onInit();
     // listview 滚动监听
     scrollControllerListener();
-    // 请求接口
+    // 请求接口 轮播图
     getFocusData();
+    // 商品分类
+    getCategoryData();
   }
 
   void scrollControllerListener() {
@@ -51,6 +56,15 @@ class HomeController extends GetxController {
     // swiperList.value = response.data['result'];
     var focus = FocusModel.fromJson(response.data);
     swiperList.value = focus.result!;
+    update();
+  }
+
+  // 获取banner图片列表
+  getCategoryData() async {
+    var response = await Dio().get('https://xiaomi.itying.com/api/bestCate');
+    print(response);
+    var category = CategoryModel.fromJson(response.data);
+    categoryList.value = category.result!;
     update();
   }
 }

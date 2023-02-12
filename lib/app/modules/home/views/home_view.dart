@@ -91,6 +91,109 @@ class HomeView extends GetView<HomeController> {
             )));
   }
 
+  // 轮播图
+  Widget _focus() {
+    return SizedBox(
+      width: ScreenAdapter.width(1080),
+      height: ScreenAdapter.height(682),
+      child: Obx(() => Swiper(
+            itemCount: controller.swiperList.length,
+            itemBuilder: (context, index) {
+              return Image.network(
+                'https://xiaomi.itying.com/${controller.swiperList[index].pic}'
+                  ..replaceAll("\\", "/"),
+                fit: BoxFit.fill,
+              );
+            },
+            pagination: const SwiperPagination(
+                // SwiperPagination.rect 指示器样式
+                builder: SwiperPagination.rect), // 底部指示器
+            // control: const SwiperControl(), // 左右选择按钮（上一张、下一张）
+            autoplay: true, //自动播放
+            loop: true, // 无限播放
+          )),
+    );
+  }
+
+  Widget _banner() {
+    return SizedBox(
+      width: ScreenAdapter.width(1080),
+      height: ScreenAdapter.height(92),
+      child: Image.asset(
+        'assets/images/xiaomiBanner.png',
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  // 顶部滑动分类
+  Widget _category() {
+    return SizedBox(
+      width: ScreenAdapter.width(1080),
+      height: ScreenAdapter.height(480),
+      child: Obx(() => Swiper(
+            itemCount: controller.categoryList.length ~/ 10,
+            itemBuilder: (context, index) {
+              return GridView.builder(
+                  itemCount: 10, // 总共多少数据
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5, // 每行展示几个数据
+                      // item的左右间距
+                      crossAxisSpacing: ScreenAdapter.width(20),
+                      mainAxisSpacing: ScreenAdapter.height(40)),
+                  itemBuilder: (context, i) {
+                    return Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: ScreenAdapter.width(140),
+                          height: ScreenAdapter.height(140),
+                          child: Image.network(
+                            'https://xiaomi.itying.com/${controller.categoryList[index * 10 + i].pic}'
+                              ..replaceAll('\\', '/'),
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              0, ScreenAdapter.height(4), 0, 0),
+                          child: Text(
+                            '${controller.categoryList[index * 10 + i].title}',
+                            style:
+                                TextStyle(fontSize: ScreenAdapter.fontSize(34)),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            },
+            pagination: SwiperPagination(
+                margin: const EdgeInsets.all(0.0),
+                builder: SwiperCustomPagination(
+                    builder: (BuildContext context, SwiperPluginConfig config) {
+                  return ConstrainedBox(
+                    constraints:
+                        BoxConstraints.expand(height: ScreenAdapter.height(20)),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: const RectSwiperPaginationBuilder(
+                              color: Colors.black12,
+                              activeColor: Colors.black54,
+                            ).build(context, config),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                })), // 底部指示器
+            // control: const SwiperControl(), // 左右选择按钮（上一张、下一张）
+          )),
+    );
+  }
+
   // 内容区域
   Widget _homePage() {
     return Positioned(
@@ -101,26 +204,9 @@ class HomeView extends GetView<HomeController> {
         // https://www.itying.com/images/focus/focus02.png
         child: ListView(
           children: [
-            Container(
-              width: ScreenAdapter.width(1080),
-              height: ScreenAdapter.height(682),
-              child: Obx(() => Swiper(
-                    itemCount: controller.swiperList.length,
-                    itemBuilder: (context, index) {
-                      return Image.network(
-                        'https://xiaomi.itying.com/${controller.swiperList[index].pic}'
-                          ..replaceAll("\\", "/"),
-                        fit: BoxFit.fill,
-                      );
-                    },
-                    pagination: const SwiperPagination(
-                        // SwiperPagination.rect 指示器样式
-                        builder: SwiperPagination.rect), // 底部指示器
-                    // control: const SwiperControl(), // 左右选择按钮（上一张、下一张）
-                    autoplay: true, //自动播放
-                    loop: true, // 无限播放
-                  )),
-            )
+            _focus(),
+            _banner(),
+            _category(),
           ],
         ));
   }
