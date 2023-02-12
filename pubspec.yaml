@@ -14,6 +14,8 @@ dependencies:
   flutter_swiper_view: ^1.1.8
 #  网络请求
   dio: ^4.0.6
+#  瀑布流布局
+  flutter_staggered_grid_view: ^0.6.2
 
   flutter: 
     sdk: flutter

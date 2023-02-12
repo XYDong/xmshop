@@ -18,6 +18,11 @@ class HomeController extends GetxController {
   RxList<FocusItemModel> bestSellingList = <FocusItemModel>[].obs;
   //热销商品列表
   RxList<PlistItemModel> sellingList = <PlistItemModel>[].obs;
+  //省心优惠商品列表
+  RxList<PlistItemModel> bestPlist = <PlistItemModel>[].obs;
+  // 省心优惠商品列表的页数
+  RxInt page = 1.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -29,9 +34,10 @@ class HomeController extends GetxController {
     getCategoryData();
     // 热销轮播图
     getBestSellingListData();
-
     // 获取热销商品列表
     getsSellingListData();
+    // 获取热门商品
+    getBestPlistData();
   }
 
   void scrollControllerListener() {
@@ -95,6 +101,15 @@ class HomeController extends GetxController {
     print(response);
     var selling = PlistModel.fromJson(response.data);
     sellingList.value = selling.result!;
+    update();
+  }
+
+  //获取热门商品数据
+  getBestPlistData() async {
+    var response =
+        await Dio().get("https://xiaomi.itying.com/api/plist?is_best=1");
+    var plist = PlistModel.fromJson(response.data);
+    bestPlist.value = plist.result!;
     update();
   }
 }

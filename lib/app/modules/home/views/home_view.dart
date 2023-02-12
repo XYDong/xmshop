@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:get/get.dart';
 import 'package:xmshop/app/services/JokerIcons.dart';
@@ -47,7 +48,7 @@ class HomeView extends GetView<HomeController> {
                     : ScreenAdapter.width(620),
                 height: ScreenAdapter.height(96),
                 decoration: BoxDecoration(
-                    color: const Color.fromARGB(230, 252, 243, 236),
+                    color: const Color.fromRGBO(246, 246, 246, 1),
                     borderRadius: BorderRadius.circular(30)),
                 duration: const Duration(milliseconds: 300),
                 child: Row(
@@ -235,7 +236,7 @@ class HomeView extends GetView<HomeController> {
                     fontSize: ScreenAdapter.fontSize(46)),
               ),
               Text(
-                '更多手机>',
+                '更多手机 >',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: ScreenAdapter.fontSize(36),
@@ -374,6 +375,100 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
+  Widget _bestGoods() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              ScreenAdapter.width(30),
+              ScreenAdapter.height(40),
+              ScreenAdapter.width(30),
+              ScreenAdapter.height(20)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '省心优惠',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: ScreenAdapter.fontSize(46)),
+              ),
+              Text(
+                '全部优惠 >',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: ScreenAdapter.fontSize(36),
+                    color: Colors.black54),
+              ),
+            ],
+          ),
+        ),
+        Obx(() => Container(
+              padding: EdgeInsets.all(ScreenAdapter.width(20)),
+              color: const Color.fromRGBO(246, 246, 246, 1),
+              child: MasonryGridView.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: ScreenAdapter.width(26), // 水平方向间距
+                crossAxisSpacing: ScreenAdapter.height(26), // 垂直方向间距
+                itemCount: controller.bestPlist.length, // 有多少子元素
+                shrinkWrap: true, // 收缩，让子元素自适应
+                physics: const NeverScrollableScrollPhysics(), // 禁止滑动
+                itemBuilder: (context, index) {
+                  return Container(
+                    // height: 50 + 150 * Random().nextDouble(),
+                    padding:
+                        EdgeInsets.fromLTRB(ScreenAdapter.width(20), 0, 0, 0),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      // border: Border.all(color: Colors.black87, width: 1)
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          child: Image.network(
+                              'https://xiaomi.itying.com/${controller.bestPlist[index].sPic}'
+                                ..replaceAll('\\', '/')),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Text('${controller.bestPlist[index].title}',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  fontSize: ScreenAdapter.fontSize(42),
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.all(ScreenAdapter.height(10)),
+                          child: Text(
+                            '${controller.bestPlist[index].subTitle}',
+                            textAlign: TextAlign.start,
+                            style:
+                                TextStyle(fontSize: ScreenAdapter.fontSize(32)),
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            '￥${controller.bestPlist[index].price}元',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: ScreenAdapter.fontSize(32),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ))
+      ],
+    );
+  }
+
   // 内容区域
   Widget _homePage() {
     return Positioned(
@@ -390,7 +485,8 @@ class HomeView extends GetView<HomeController> {
             _category(),
             _banner2(),
             _bestSelling(),
-            SizedBox(
+            _bestGoods(),
+            const SizedBox(
               height: 100,
             )
           ],
