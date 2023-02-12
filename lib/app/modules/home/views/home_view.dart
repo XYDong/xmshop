@@ -194,6 +194,186 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
+  // banner2
+  Widget _banner2() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+          ScreenAdapter.width(20),
+          ScreenAdapter.height(20),
+          ScreenAdapter.width(20),
+          ScreenAdapter.height(0)),
+      child: Container(
+        height: ScreenAdapter.height(420),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: const DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage(
+                  'assets/images/xiaomiBanner2.png',
+                ))),
+      ),
+    );
+  }
+
+  // 热销甄选
+  Widget _bestSelling() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              ScreenAdapter.width(30),
+              ScreenAdapter.height(40),
+              ScreenAdapter.width(30),
+              ScreenAdapter.height(20)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '热销臻选',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: ScreenAdapter.fontSize(46)),
+              ),
+              Text(
+                '更多手机>',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: ScreenAdapter.fontSize(36),
+                    color: Colors.black54),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              ScreenAdapter.width(30),
+              ScreenAdapter.height(20),
+              ScreenAdapter.width(30),
+              ScreenAdapter.height(20)),
+          child: Row(
+            children: [
+              // 左侧
+              Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    height: ScreenAdapter.height(738),
+                    child: Obx(() => Swiper(
+                          itemCount: controller.bestSellingList.length,
+                          itemBuilder: (context, index) {
+                            return Image.network(
+                              'https://xiaomi.itying.com/${controller.bestSellingList[index].pic}'
+                                ..replaceAll('\\', '/'),
+                              fit: BoxFit.fill,
+                            );
+                          },
+                          pagination: SwiperPagination(
+                              margin: const EdgeInsets.all(0.0),
+                              builder: SwiperCustomPagination(builder:
+                                  (BuildContext context,
+                                      SwiperPluginConfig config) {
+                                return ConstrainedBox(
+                                  constraints: BoxConstraints.expand(
+                                      height: ScreenAdapter.height(36)),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child:
+                                              const RectSwiperPaginationBuilder(
+                                            color: Colors.black12,
+                                            activeColor: Colors.black54,
+                                          ).build(context, config),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              })), // 底部指示器
+                          // control: const SwiperControl(), // 左右选择按钮（上一张、下一张）
+                          autoplay: true, //自动播放
+                          loop: true, // 无限播放
+                        )),
+                  )),
+              SizedBox(
+                width: ScreenAdapter.width(10),
+              ),
+              // 右侧
+              Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    height: ScreenAdapter.height(738),
+                    // color: Colors.blue,
+                    child: Obx(() => Column(
+                          // 循环遍历map的另一种方式
+                          children: controller.sellingList
+                              .asMap()
+                              .entries
+                              .map((entries) {
+                            var value = entries.value;
+                            var key = entries.key;
+                            return Expanded(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, 0,
+                                    key < 2 ? ScreenAdapter.height(20) : 0),
+                                color: const Color.fromRGBO(246, 246, 246, 1),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                              height: ScreenAdapter.height(20)),
+                                          Text('${value.title}',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      ScreenAdapter.fontSize(
+                                                          38),
+                                                  fontWeight: FontWeight.bold)),
+                                          SizedBox(
+                                              height: ScreenAdapter.height(20)),
+                                          Text('${value.subTitle}',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      ScreenAdapter.fontSize(
+                                                          28))),
+                                          SizedBox(
+                                              height: ScreenAdapter.height(20)),
+                                          Text('￥${value.price}元',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      ScreenAdapter.fontSize(
+                                                          34)))
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(
+                                            ScreenAdapter.height(8)),
+                                        child: Image.network(
+                                            'https://xiaomi.itying.com/${value.pic}'
+                                              ..replaceAll('\\', '/'),
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        )),
+                  )),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   // 内容区域
   Widget _homePage() {
     return Positioned(
@@ -203,10 +383,16 @@ class HomeView extends GetView<HomeController> {
         bottom: 0,
         // https://www.itying.com/images/focus/focus02.png
         child: ListView(
+          controller: controller.scrollController,
           children: [
             _focus(),
             _banner(),
             _category(),
+            _banner2(),
+            _bestSelling(),
+            SizedBox(
+              height: 100,
+            )
           ],
         ));
   }

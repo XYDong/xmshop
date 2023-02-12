@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xmshop/app/models/category_model.dart';
 import 'package:xmshop/app/models/focus_model.dart';
+import 'package:xmshop/app/models/plist_model.dart';
 
 class HomeController extends GetxController {
   // 监听一个滚动的controller
@@ -13,6 +14,10 @@ class HomeController extends GetxController {
   RxList<FocusItemModel> swiperList = <FocusItemModel>[].obs;
 // 首页商品分类列表
   RxList<CategoryItemModel> categoryList = <CategoryItemModel>[].obs;
+  //热销轮播图
+  RxList<FocusItemModel> bestSellingList = <FocusItemModel>[].obs;
+  //热销商品列表
+  RxList<PlistItemModel> sellingList = <PlistItemModel>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -22,6 +27,11 @@ class HomeController extends GetxController {
     getFocusData();
     // 商品分类
     getCategoryData();
+    // 热销轮播图
+    getBestSellingListData();
+
+    // 获取热销商品列表
+    getsSellingListData();
   }
 
   void scrollControllerListener() {
@@ -65,6 +75,26 @@ class HomeController extends GetxController {
     print(response);
     var category = CategoryModel.fromJson(response.data);
     categoryList.value = category.result!;
+    update();
+  }
+
+  // 获取热销中的轮播图
+  getBestSellingListData() async {
+    var response =
+        await Dio().get('https://xiaomi.itying.com/api/focus?position=2');
+    print(response);
+    var bestSelling = FocusModel.fromJson(response.data);
+    bestSellingList.value = bestSelling.result!;
+    update();
+  }
+
+  // 获取热销商品列表
+  getsSellingListData() async {
+    var response = await Dio()
+        .get('http://xiaomi.itying.com/api/plist?is_hot=1&pageSize=3');
+    print(response);
+    var selling = PlistModel.fromJson(response.data);
+    sellingList.value = selling.result!;
     update();
   }
 }
