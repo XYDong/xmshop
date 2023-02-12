@@ -8,20 +8,21 @@ class TabsView extends GetView<TabsController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-          appBar: AppBar(
-            title: const Text('TabsView'),
-            centerTitle: true,
-          ),
-          body: const Center(
-            child: Text(
-              'TabsView is working',
-              style: TextStyle(fontSize: 20),
-            ),
+          body: PageView(
+            controller: controller.pageController,
+            children: controller.pages,
+            onPageChanged: (index) {
+              controller.setCurrentIndex(index);
+            },
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: controller.currentIndex.value,
             onTap: (index) {
-              controller.currentIndex(index);
+              controller.setCurrentIndex(index);
+              // controller.pageController.animateToPage(index,
+              //     duration: const Duration(microseconds: 500),
+              //     curve: Curves.linear);
+              controller.pageController.jumpToPage(index);
             },
             // iconSize: 25, // 底部菜单大小
             fixedColor: Colors.red, // 底部菜单选中的颜色
@@ -29,8 +30,9 @@ class TabsView extends GetView<TabsController> {
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: '首页'),
               BottomNavigationBarItem(icon: Icon(Icons.category), label: '分类'),
-              BottomNavigationBarItem(icon: Icon(Icons.message), label: '消息'),
-              BottomNavigationBarItem(icon: Icon(Icons.settings), label: '设置'),
+              BottomNavigationBarItem(icon: Icon(Icons.message), label: '服务'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_cart), label: '购物车'),
               BottomNavigationBarItem(icon: Icon(Icons.people), label: '用户'),
             ],
           ),
