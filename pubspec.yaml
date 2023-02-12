@@ -8,6 +8,9 @@ environment:
 dependencies: 
   cupertino_icons: ^1.0.2
   get: 4.6.5
+#  屏幕适配
+  flutter_screenutil: ^5.6.1
+
   flutter: 
     sdk: flutter
 
@@ -18,4 +21,9 @@ dev_dependencies:
 
 flutter: 
   uses-material-design: true
+#  自定义图标
+  fonts:
+    - family: jokerFont
+      fonts:
+        - asset: assets/fonts/iconfont.ttf
 
