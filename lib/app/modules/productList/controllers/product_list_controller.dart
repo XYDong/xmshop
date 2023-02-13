@@ -16,6 +16,30 @@ class ProductListController extends GetxController {
   RxBool flag = true.obs;
   // 是否有更多数据
   RxBool hasData = true.obs;
+  // 筛选弹出的key (需要绑定ScaffoldState，这样才能回去里边的widget)
+  GlobalKey<ScaffoldState> scaffoldGlobalKey = GlobalKey<ScaffoldState>();
+  // 用于排序
+  String sort = '';
+
+  /*二级导航数据*/
+  List subHeaderList = [
+    {
+      "id": 1,
+      "title": "综合",
+      "fileds": "all",
+      "sort":
+          -1, // 排序     升序：price_1     {price:1}        降序：price_-1   {price:-1}
+    },
+    {"id": 2, "title": "销量", "fileds": 'salecount', "sort": -1},
+    {"id": 3, "title": "价格", "fileds": 'price', "sort": -1},
+    {"id": 4, "title": "筛选"}
+  ];
+
+  //二级导航选中判断
+  RxInt selectHeaderId = 1.obs;
+
+  // 解决同一分类数据多次点击无法排序的问题
+  RxInt subHeaderListSort = 0.obs;
 
   @override
   void onInit() {
@@ -30,11 +54,12 @@ class ProductListController extends GetxController {
     super.onClose();
   }
 
+  // 获取商品列表
   getPListData() async {
     if (flag.value && hasData.value) {
       flag.value = false;
       var response = await httpsClient.get(
-          "api/plist?cid=${Get.arguments['cId']}&page=$page&pageSize=$pageSize");
+          "api/plist?cid=${Get.arguments['cId']}&page=$page&pageSize=$pageSize&sort=$sort");
       if (response != null) {
         var plistTemp = PlistModel.fromJson(response.data);
         // 注意拼接数据
@@ -49,6 +74,7 @@ class ProductListController extends GetxController {
     }
   }
 
+  // 滚动监听
   void initScrollerListener() {
     scrollController.addListener(() {
       // scrollController.position.pixels 滚动条下拉的高度
@@ -58,5 +84,25 @@ class ProductListController extends GetxController {
         getPListData();
       }
     });
+  }
+
+  // 点击顶部菜单的操作
+  void subHeaderChange(value) {
+    selectHeaderId.value = value['id'];
+    if (selectHeaderId.value == 4) {
+      scaffoldGlobalKey.currentState!.openEndDrawer();
+    } else {
+      sort = '${value['fileds']}_${value['sort']}';
+      // 切换排序
+      value['sort'] = value['sort'] * -1;
+      subHeaderListSort.value = value['sort'] * -1;
+      // 重置数据
+      page = 1;
+      hasData.value = true;
+      flag.value = true;
+      plist.value = [];
+      getPListData();
+    }
+    update();
   }
 }
