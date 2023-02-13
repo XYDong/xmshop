@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/services/httpsClient.dart';
 
 import '../../../services/screenAdapter.dart';
 import '../controllers/category_controller.dart';
@@ -115,28 +116,35 @@ class CategoryView extends GetView<CategoryController> {
               mainAxisSpacing: ScreenAdapter.height(20),
               childAspectRatio: 240 / 346),
           itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  child: Image.network(
-                    'https://xiaomi.itying.com/${controller.rightCategoryList[index].pic}'
-                      ..replaceAll('\\', '/'),
-                    fit: BoxFit.fill,
+            return InkWell(
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    child: Image.network(
+                      HttpsClient.replaceUri(
+                          controller.rightCategoryList[index].pic),
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.fromLTRB(0, ScreenAdapter.height(10), 0, 0),
-                  child: Text(
-                    '${controller.rightCategoryList[index].title}',
-                    style: TextStyle(
-                        fontSize: ScreenAdapter.fontSize(34),
-                        fontWeight: FontWeight.bold),
+                  Padding(
+                    padding:
+                        EdgeInsets.fromLTRB(0, ScreenAdapter.height(10), 0, 0),
+                    child: Text(
+                      '${controller.rightCategoryList[index].title}',
+                      style: TextStyle(
+                          fontSize: ScreenAdapter.fontSize(34),
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              onTap: () {
+                Get.toNamed('/product-list', arguments: {
+                  "cId": controller.rightCategoryList[index].sId
+                });
+              },
             );
           })),
     ));

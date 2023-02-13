@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:get/get.dart';
 import 'package:xmshop/app/services/JokerIcons.dart';
+import 'package:xmshop/app/services/httpsClient.dart';
 import 'package:xmshop/app/services/keepAliveWrapper.dart';
 import 'package:xmshop/app/services/screenAdapter.dart';
 
@@ -101,8 +102,7 @@ class HomeView extends GetView<HomeController> {
             itemCount: controller.swiperList.length,
             itemBuilder: (context, index) {
               return Image.network(
-                'https://xiaomi.itying.com/${controller.swiperList[index].pic}'
-                  ..replaceAll("\\", "/"),
+                HttpsClient.replaceUri(controller.swiperList[index].pic),
                 fit: BoxFit.fill,
               );
             },
@@ -150,8 +150,8 @@ class HomeView extends GetView<HomeController> {
                           width: ScreenAdapter.width(140),
                           height: ScreenAdapter.height(140),
                           child: Image.network(
-                            'https://xiaomi.itying.com/${controller.categoryList[index * 10 + i].pic}'
-                              ..replaceAll('\\', '/'),
+                            HttpsClient.replaceUri(
+                                controller.categoryList[index * 10 + i].pic),
                             fit: BoxFit.fitHeight,
                           ),
                         ),
@@ -262,8 +262,8 @@ class HomeView extends GetView<HomeController> {
                           itemCount: controller.bestSellingList.length,
                           itemBuilder: (context, index) {
                             return Image.network(
-                              'https://xiaomi.itying.com/${controller.bestSellingList[index].pic}'
-                                ..replaceAll('\\', '/'),
+                              HttpsClient.replaceUri(
+                                  controller.bestSellingList[index].pic),
                               fit: BoxFit.fill,
                             );
                           },
@@ -356,8 +356,7 @@ class HomeView extends GetView<HomeController> {
                                         padding: EdgeInsets.all(
                                             ScreenAdapter.height(8)),
                                         child: Image.network(
-                                            'https://xiaomi.itying.com/${value.pic}'
-                                              ..replaceAll('\\', '/'),
+                                            HttpsClient.replaceUri(value.pic),
                                             fit: BoxFit.cover),
                                       ),
                                     ),
@@ -426,9 +425,8 @@ class HomeView extends GetView<HomeController> {
                       children: [
                         Container(
                           padding: const EdgeInsets.all(10),
-                          child: Image.network(
-                              'https://xiaomi.itying.com/${controller.bestPlist[index].sPic}'
-                                ..replaceAll('\\', '/')),
+                          child: Image.network(HttpsClient.replaceUri(
+                              controller.bestPlist[index].sPic)),
                         ),
                         SizedBox(
                           width: double.infinity,

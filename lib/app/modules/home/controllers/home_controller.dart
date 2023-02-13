@@ -1,11 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xmshop/app/models/category_model.dart';
 import 'package:xmshop/app/models/focus_model.dart';
 import 'package:xmshop/app/models/plist_model.dart';
+import 'package:xmshop/app/services/httpsClient.dart';
 
 class HomeController extends GetxController {
+  // 初始化网络请求
+  HttpsClient httpsClient = HttpsClient();
   // 监听一个滚动的controller
   ScrollController scrollController = ScrollController();
   // 浮动导航开关
@@ -66,50 +68,55 @@ class HomeController extends GetxController {
 
   // 获取banner图片列表
   getFocusData() async {
-    var response = await Dio().get('https://xiaomi.itying.com/api/focus');
-    print(response);
-    // print(response.data is Map);
-    // swiperList.value = response.data['result'];
-    var focus = FocusModel.fromJson(response.data);
-    swiperList.value = focus.result!;
-    update();
+    var response = await httpsClient.get('api/focus');
+    if (response != null) {
+      // print(response);
+      var focus = FocusModel.fromJson(response.data);
+      swiperList.value = focus.result!;
+      update();
+    }
   }
 
   // 获取banner图片列表
   getCategoryData() async {
-    var response = await Dio().get('https://xiaomi.itying.com/api/bestCate');
-    print(response);
-    var category = CategoryModel.fromJson(response.data);
-    categoryList.value = category.result!;
-    update();
+    var response = await httpsClient.get('api/bestCate');
+    if (response != null) {
+      // print(response);
+      var category = CategoryModel.fromJson(response.data);
+      categoryList.value = category.result!;
+      update();
+    }
   }
 
   // 获取热销中的轮播图
   getBestSellingListData() async {
-    var response =
-        await Dio().get('https://xiaomi.itying.com/api/focus?position=2');
-    print(response);
-    var bestSelling = FocusModel.fromJson(response.data);
-    bestSellingList.value = bestSelling.result!;
-    update();
+    var response = await httpsClient.get('api/focus?position=2');
+    if (response != null) {
+      // print(response);
+      var bestSelling = FocusModel.fromJson(response.data);
+      bestSellingList.value = bestSelling.result!;
+      update();
+    }
   }
 
   // 获取热销商品列表
   getsSellingListData() async {
-    var response = await Dio()
-        .get('http://xiaomi.itying.com/api/plist?is_hot=1&pageSize=3');
-    print(response);
-    var selling = PlistModel.fromJson(response.data);
-    sellingList.value = selling.result!;
-    update();
+    var response = await httpsClient.get('api/plist?is_hot=1&pageSize=3');
+    if (response != null) {
+      // print(response);
+      var selling = PlistModel.fromJson(response.data);
+      sellingList.value = selling.result!;
+      update();
+    }
   }
 
   //获取热门商品数据
   getBestPlistData() async {
-    var response =
-        await Dio().get("https://xiaomi.itying.com/api/plist?is_best=1");
-    var plist = PlistModel.fromJson(response.data);
-    bestPlist.value = plist.result!;
-    update();
+    var response = await httpsClient.get("api/plist?is_best=1");
+    if (response != null) {
+      var plist = PlistModel.fromJson(response.data);
+      bestPlist.value = plist.result!;
+      update();
+    }
   }
 }
