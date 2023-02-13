@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xmshop/app/services/httpsClient.dart';
 
+import '../../../services/httpsClient.dart';
 import '../../../services/screenAdapter.dart';
 import '../controllers/category_controller.dart';
 
@@ -17,21 +17,26 @@ class CategoryView extends GetView<CategoryController> {
           decoration: BoxDecoration(
               color: const Color.fromRGBO(246, 246, 246, 1),
               borderRadius: BorderRadius.circular(30)),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                    ScreenAdapter.width(34), 0, ScreenAdapter.width(10), 0),
-                child: const Icon(Icons.search),
-              ),
-              Text(
-                '手机',
-                style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: ScreenAdapter.fontSize(32)),
-              ),
-            ],
+          child: InkWell(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      ScreenAdapter.width(34), 0, ScreenAdapter.width(10), 0),
+                  child: const Icon(Icons.search),
+                ),
+                Text(
+                  '手机',
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: ScreenAdapter.fontSize(32)),
+                ),
+              ],
+            ),
+            onTap: () {
+              Get.toNamed('/search');
+            },
           ),
         ),
         centerTitle: true,

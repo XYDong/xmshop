@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:get/get.dart';
-import 'package:xmshop/app/services/JokerIcons.dart';
-import 'package:xmshop/app/services/httpsClient.dart';
-import 'package:xmshop/app/services/keepAliveWrapper.dart';
-import 'package:xmshop/app/services/screenAdapter.dart';
 
+import '../../../services/JokerIcons.dart';
+import '../../../services/httpsClient.dart';
+import '../../../services/keepAliveWrapper.dart';
+import '../../../services/screenAdapter.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -43,31 +43,36 @@ class HomeView extends GetView<HomeController> {
               leadingWidth: controller.flag.value
                   ? ScreenAdapter.width(40)
                   : ScreenAdapter.width(140),
-              title: AnimatedContainer(
-                width: controller.flag.value
-                    ? ScreenAdapter.width(800)
-                    : ScreenAdapter.width(620),
-                height: ScreenAdapter.height(96),
-                decoration: BoxDecoration(
-                    color: const Color.fromRGBO(246, 246, 246, 1),
-                    borderRadius: BorderRadius.circular(30)),
-                duration: const Duration(milliseconds: 300),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(ScreenAdapter.width(34), 0,
-                          ScreenAdapter.width(10), 0),
-                      child: const Icon(Icons.search),
-                    ),
-                    Text(
-                      '手机',
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: ScreenAdapter.fontSize(32)),
-                    ),
-                  ],
+              title: InkWell(
+                child: AnimatedContainer(
+                  width: controller.flag.value
+                      ? ScreenAdapter.width(800)
+                      : ScreenAdapter.width(620),
+                  height: ScreenAdapter.height(96),
+                  decoration: BoxDecoration(
+                      color: const Color.fromRGBO(246, 246, 246, 1),
+                      borderRadius: BorderRadius.circular(30)),
+                  duration: const Duration(milliseconds: 300),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(ScreenAdapter.width(34), 0,
+                            ScreenAdapter.width(10), 0),
+                        child: const Icon(Icons.search),
+                      ),
+                      Text(
+                        '手机',
+                        style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: ScreenAdapter.fontSize(32)),
+                      ),
+                    ],
+                  ),
                 ),
+                onTap: () {
+                  Get.toNamed('/search');
+                },
               ),
               centerTitle: true,
               backgroundColor: controller.flag.value
