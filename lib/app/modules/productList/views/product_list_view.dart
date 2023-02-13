@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/services/httpsClient.dart';
 
 import '../../../services/screenAdapter.dart';
 import '../controllers/product_list_controller.dart';
@@ -129,126 +130,161 @@ class ProductListView extends GetView<ProductListController> {
 
   // 商品列表
   Widget _productListWidget() {
-    return ListView.builder(
-        padding: EdgeInsets.fromLTRB(
-            ScreenAdapter.width(26),
-            ScreenAdapter.height(140),
-            ScreenAdapter.width(26),
-            ScreenAdapter.height(26)),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.only(bottom: ScreenAdapter.height(26)),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-            ),
-            child: Row(
-              children: [
-                // 左侧
-                Container(
-                  padding: EdgeInsets.all(ScreenAdapter.width(10)),
-                  width: ScreenAdapter.width(400),
-                  height: ScreenAdapter.height(460),
-                  child: Image.network(
-                    'https://www.itying.com/images/focus/focus02.png',
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                // 右侧
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                            0, 0, 0, ScreenAdapter.height(20)),
-                        child: Text(
-                          '手机',
-                          style: TextStyle(
-                              fontSize: ScreenAdapter.fontSize(42),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                            0, 0, 0, ScreenAdapter.height(20)),
-                        child: Text(
-                          '11111111111111111111111111',
-                          style:
-                              TextStyle(fontSize: ScreenAdapter.fontSize(34)),
-                        ),
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              0, 0, 0, ScreenAdapter.height(20)),
+    return Obx(() => controller.plist.isNotEmpty
+        ? ListView.builder(
+            controller: controller.scrollController,
+            padding: EdgeInsets.fromLTRB(
+                ScreenAdapter.width(26),
+                ScreenAdapter.height(140),
+                ScreenAdapter.width(26),
+                ScreenAdapter.height(26)),
+            itemCount: controller.plist.length,
+            itemBuilder: (context, index) {
+              return controller.plist.isNotEmpty
+                  ? Column(
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.only(bottom: ScreenAdapter.height(26)),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
                           child: Row(
                             children: [
+                              // 左侧
+                              Container(
+                                padding:
+                                    EdgeInsets.all(ScreenAdapter.width(10)),
+                                width: ScreenAdapter.width(400),
+                                height: ScreenAdapter.height(460),
+                                child: Image.network(
+                                  HttpsClient.replaceUri(
+                                      controller.plist[index].pic),
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              ),
+                              // 右侧
                               Expanded(
-                                  child: Column(
-                                children: [
-                                  Text(
-                                    'CPU',
-                                    style: TextStyle(
-                                        fontSize: ScreenAdapter.fontSize(34),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '11111111',
-                                    style: TextStyle(
-                                        fontSize: ScreenAdapter.fontSize(34)),
-                                  ),
-                                ],
-                              )),
-                              Expanded(
-                                  child: Column(
-                                children: [
-                                  Text(
-                                    'CPU',
-                                    style: TextStyle(
-                                        fontSize: ScreenAdapter.fontSize(34),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '11111111',
-                                    style: TextStyle(
-                                        fontSize: ScreenAdapter.fontSize(34)),
-                                  ),
-                                ],
-                              )),
-                              Expanded(
-                                  child: Column(
-                                children: [
-                                  Text(
-                                    'CPU',
-                                    style: TextStyle(
-                                        fontSize: ScreenAdapter.fontSize(34),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '11111111',
-                                    style: TextStyle(
-                                        fontSize: ScreenAdapter.fontSize(34)),
-                                  ),
-                                ],
-                              )),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          0, 0, 0, ScreenAdapter.height(20)),
+                                      child: Text(
+                                        '${controller.plist[index].title}',
+                                        style: TextStyle(
+                                            fontSize:
+                                                ScreenAdapter.fontSize(42),
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          0, 0, 0, ScreenAdapter.height(20)),
+                                      child: Text(
+                                        '${controller.plist[index].subTitle}',
+                                        style: TextStyle(
+                                            fontSize:
+                                                ScreenAdapter.fontSize(34)),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                            0, 0, 0, ScreenAdapter.height(20)),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                                child: Column(
+                                              children: [
+                                                Text(
+                                                  'CPU',
+                                                  style: TextStyle(
+                                                      fontSize: ScreenAdapter
+                                                          .fontSize(34),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  '11111111',
+                                                  style: TextStyle(
+                                                      fontSize: ScreenAdapter
+                                                          .fontSize(34)),
+                                                ),
+                                              ],
+                                            )),
+                                            Expanded(
+                                                child: Column(
+                                              children: [
+                                                Text(
+                                                  'CPU',
+                                                  style: TextStyle(
+                                                      fontSize: ScreenAdapter
+                                                          .fontSize(34),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  '11111111',
+                                                  style: TextStyle(
+                                                      fontSize: ScreenAdapter
+                                                          .fontSize(34)),
+                                                ),
+                                              ],
+                                            )),
+                                            Expanded(
+                                                child: Column(
+                                              children: [
+                                                Text(
+                                                  'CPU',
+                                                  style: TextStyle(
+                                                      fontSize: ScreenAdapter
+                                                          .fontSize(34),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  '11111111',
+                                                  style: TextStyle(
+                                                      fontSize: ScreenAdapter
+                                                          .fontSize(34)),
+                                                ),
+                                              ],
+                                            )),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '￥${controller.plist[index].price}元',
+                                      style: TextStyle(
+                                          fontSize: ScreenAdapter.fontSize(34),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                         ),
-                      ),
-                      Text(
-                        '￥20000元',
-                        style: TextStyle(
-                            fontSize: ScreenAdapter.fontSize(34),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        });
+                        controller.plist.length - 1 == index
+                            ? _processIndicator()
+                            : const Text(''),
+                      ],
+                    )
+                  : _processIndicator();
+            })
+        : _processIndicator());
+  }
+
+  // 加载更多的loading
+  Widget _processIndicator() {
+    return controller.hasData.value
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : const Text('没有更多数据了');
   }
 }
