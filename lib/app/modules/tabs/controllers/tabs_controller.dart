@@ -8,7 +8,7 @@ import 'package:xmshop/app/modules/user/views/user_view.dart';
 
 class TabsController extends GetxController {
   // tabs当前的位置
-  RxInt currentIndex = 0.obs;
+  RxInt currentIndex = 1.obs;
   final List<Widget> pages = [
     const HomeView(),
     const CategoryView(),
@@ -17,7 +17,7 @@ class TabsController extends GetxController {
     const UserView(),
   ];
   // 页面左右切换
-  final PageController pageController = PageController(initialPage: 0);
+  final PageController pageController = PageController(initialPage: 1);
 
   @override
   void onInit() {

@@ -21,7 +21,7 @@ class HomeController extends GetxController {
   //省心优惠商品列表
   RxList<PlistItemModel> bestPlist = <PlistItemModel>[].obs;
   // 省心优惠商品列表的页数
-  RxInt page = 1.obs;
+  // RxInt page = 1.obs;
 
   @override
   void onInit() {
