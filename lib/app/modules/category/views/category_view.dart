@@ -35,12 +35,12 @@ class CategoryView extends GetView<CategoryController> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         actions: [
           IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.message_outlined,
                 color: Colors.black45,
               )),
