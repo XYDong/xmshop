@@ -59,7 +59,10 @@ class HomeView extends GetView<HomeController> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(ScreenAdapter.width(34), 0,
                             ScreenAdapter.width(10), 0),
-                        child: const Icon(Icons.search),
+                        child: const Icon(
+                          Icons.search,
+                          color: Colors.black54,
+                        ),
                       ),
                       Text(
                         '手机',

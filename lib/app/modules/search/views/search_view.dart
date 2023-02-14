@@ -29,6 +29,16 @@ class SearchView extends GetView<SearchController> {
                     borderRadius: BorderRadius.circular(30),
                     // 输入框的边框
                     borderSide: BorderSide.none)),
+            onChanged: (value) {
+              controller.keyWords = value;
+            },
+            // 监听键盘的回车事件
+            onSubmitted: (value) {
+              // Get.toNamed('/product-list', arguments: {"keyWords": value});
+              // 替换路由，直接返回到跟路由
+              Get.offAndToNamed('/product-list',
+                  arguments: {"keyWords": value});
+            },
           ),
         ),
         centerTitle: true,
@@ -36,7 +46,12 @@ class SearchView extends GetView<SearchController> {
         elevation: 0,
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              // Get.toNamed('/product-list',
+              //     arguments: {"keyWords": controller.keyWords});
+              Get.offAndToNamed('/product-list',
+                  arguments: {"keyWords": controller.keyWords});
+            },
             child: Text(
               '搜索',
               style: TextStyle(
@@ -129,39 +144,36 @@ class SearchView extends GetView<SearchController> {
                           fit: BoxFit.cover,
                           image: AssetImage("assets/images/hotSearch.png"))),
                 ),
-                Container(
-                  child: GridView.builder(
-                      shrinkWrap:
-                          true, // 收缩，解决嵌套list view 和grid view 布局无法自适应的问题
-                      physics:
-                          const NeverScrollableScrollPhysics(), // 解决嵌套的滑动冲突问题
-                      itemCount: 20,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: ScreenAdapter.width(40),
-                          mainAxisSpacing: ScreenAdapter.height(20),
-                          childAspectRatio: 3 / 1),
-                      itemBuilder: (context, index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              width: ScreenAdapter.width(120),
-                              alignment: Alignment.center,
-                              child: Image.network(
-                                  'https://www.itying.com/images/focus/focus02.png'),
-                            ),
-                            Expanded(
-                                child: Container(
-                              padding: const EdgeInsets.all(10),
-                              alignment: Alignment.topLeft,
-                              child: const Text('11111111111111111111111'),
-                            )),
-                          ],
-                        );
-                      }),
-                )
+                GridView.builder(
+                    shrinkWrap: true, // 收缩，解决嵌套list view 和grid view 布局无法自适应的问题
+                    physics:
+                        const NeverScrollableScrollPhysics(), // 解决嵌套的滑动冲突问题
+                    itemCount: 20,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: ScreenAdapter.width(40),
+                        mainAxisSpacing: ScreenAdapter.height(20),
+                        childAspectRatio: 3 / 1),
+                    itemBuilder: (context, index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            width: ScreenAdapter.width(120),
+                            alignment: Alignment.center,
+                            child: Image.network(
+                                'https://www.itying.com/images/focus/focus02.png'),
+                          ),
+                          Expanded(
+                              child: Container(
+                            padding: const EdgeInsets.all(10),
+                            alignment: Alignment.topLeft,
+                            child: const Text('11111111111111111111111'),
+                          )),
+                        ],
+                      );
+                    })
               ],
             ),
           )

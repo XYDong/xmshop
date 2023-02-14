@@ -4,7 +4,6 @@ import '../modules/productList/bindings/product_list_binding.dart';
 import '../modules/productList/views/product_list_view.dart';
 import '../modules/search/bindings/search_binding.dart';
 import '../modules/search/views/search_view.dart';
-import '../modules/search/views/search_view.dart';
 import '../modules/tabs/bindings/tabs_binding.dart';
 import '../modules/tabs/views/tabs_view.dart';
 
@@ -52,9 +51,10 @@ class AppPages {
       binding: ProductListBinding(),
     ),
     GetPage(
-      name: _Paths.SEARCH,
-      page: () => const SearchView(),
-      binding: SearchBinding(),
-    ),
+        name: _Paths.SEARCH,
+        page: () => const SearchView(),
+        binding: SearchBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 100)),
   ];
 }

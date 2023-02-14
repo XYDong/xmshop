@@ -41,6 +41,13 @@ class ProductListController extends GetxController {
   // 解决同一分类数据多次点击无法排序的问题
   RxInt subHeaderListSort = 0.obs;
 
+  // 获取传值
+  String? keyWords = Get.arguments['keyWords'];
+
+  String? cId = Get.arguments['cId'];
+
+  String apiUri = '';
+
   @override
   void onInit() {
     super.onInit();
@@ -56,10 +63,15 @@ class ProductListController extends GetxController {
 
   // 获取商品列表
   getPListData() async {
+    if (cId == null) {
+      apiUri = apiUri =
+          "api/plist?search=$keyWords&page=$page&pageSize=$pageSize&sort=$sort";
+    } else {
+      apiUri = "api/plist?cid=$cId&page=$page&pageSize=$pageSize&sort=$sort";
+    }
     if (flag.value && hasData.value) {
       flag.value = false;
-      var response = await httpsClient.get(
-          "api/plist?cid=${Get.arguments['cId']}&page=$page&pageSize=$pageSize&sort=$sort");
+      var response = await httpsClient.get(apiUri);
       if (response != null) {
         var plistTemp = PlistModel.fromJson(response.data);
         // 注意拼接数据
