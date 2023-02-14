@@ -252,7 +252,7 @@ class ProductListView extends GetView<ProductListController> {
             ),
             onTap: () {
               Get.toNamed('/product-content',
-                  arguments: {'id', controller.plist[index].sId});
+                  arguments: {"id": controller.plist[index].sId});
             },
           );
         });

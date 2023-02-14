@@ -72,6 +72,7 @@ class ProductListController extends GetxController {
     if (flag.value && hasData.value) {
       flag.value = false;
       var response = await httpsClient.get(apiUri);
+      print(response);
       if (response != null) {
         var plistTemp = PlistModel.fromJson(response.data);
         // 注意拼接数据

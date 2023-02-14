@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/modules/productContent/views/first_page_view.dart';
+import 'package:xmshop/app/modules/productContent/views/second_page_view.dart';
+import 'package:xmshop/app/modules/productContent/views/third_page_view.dart';
 
 import '../../../services/screenAdapter.dart';
 import '../controllers/product_content_controller.dart';
@@ -198,42 +201,75 @@ class ProductContentView extends GetView<ProductContentController> {
       controller: controller.scrollController,
       child: Column(
         children: [
-          Container(
-            key: controller.gk1,
-            height: ScreenAdapter.height(900),
-            color: Colors.orange,
-            child: Center(
-              child: Text(
-                '商品',
-                style: TextStyle(fontSize: 100),
-              ),
-            ),
-          ),
-          Container(
-            key: controller.gk2,
-            height: ScreenAdapter.height(1800),
-            color: Colors.blue,
-            child: Center(
-              child: Text(
-                '详情',
-                style: TextStyle(fontSize: 100),
-              ),
-            ),
-          ),
-          Container(
-            key: controller.gk3,
-            height: ScreenAdapter.height(1800),
-            color: Colors.red,
-            child: Center(
-              child: Text(
-                '推荐',
-                style: TextStyle(fontSize: 100),
-              ),
-            ),
-          ),
+          FirstPageView(),
+          SecondPageView(),
+          ThirdPageView(),
         ],
       ),
     );
+  }
+
+  Widget _bottom() {
+    return Positioned(
+        left: 0,
+        right: 0,
+        bottom: 0,
+        child: Container(
+          height: ScreenAdapter.height(200),
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(top: BorderSide(width: 2, color: Colors.black12))),
+          child: Row(
+            children: [
+              SizedBox(
+                width: ScreenAdapter.width(200),
+                height: ScreenAdapter.height(160),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.shopping_cart),
+                    Text(
+                      "购物车",
+                      style: TextStyle(fontSize: ScreenAdapter.fontSize(32)),
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                  child: Container(
+                margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromRGBO(255, 165, 0, 0.9)),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(
+                          // CircleBorder()
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)))),
+                  child: const Text('加入购物车'),
+                ),
+              )),
+              Expanded(
+                  child: Container(
+                margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromRGBO(253, 1, 0, 0.9)),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(
+                          // CircleBorder()
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)))),
+                  child: const Text('立即购买'),
+                ),
+              )),
+            ],
+          ),
+        ));
   }
 
   @override
@@ -244,7 +280,12 @@ class ProductContentView extends GetView<ProductContentController> {
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(ScreenAdapter.width(140)),
           child: _appBar(context)),
-      body: _body(),
+      body: Stack(
+        children: [
+          _body(),
+          _bottom(),
+        ],
+      ),
     );
   }
 }

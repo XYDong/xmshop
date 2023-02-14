@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/pcontent_model.dart';
+import 'package:xmshop/app/services/httpsClient.dart';
 
 class ProductContentController extends GetxController {
   ScrollController scrollController = ScrollController();
@@ -26,12 +28,18 @@ class ProductContentController extends GetxController {
   GlobalKey gk1 = GlobalKey();
   GlobalKey gk2 = GlobalKey();
   GlobalKey gk3 = GlobalKey();
+  // 初始化网络请求
+  HttpsClient httpsClient = HttpsClient();
+  // 商品详情数据
+  Rx<ContentModel> pContentData = ContentModel().obs;
 
   @override
   void onInit() {
     super.onInit();
     // listview 滚动监听
     scrollControllerListener();
+    // 获取商品详情
+    getPContentData();
   }
 
   @override
@@ -61,5 +69,16 @@ class ProductContentController extends GetxController {
   void changeSelectIndex(index) {
     selectTabsIndex.value = index;
     update();
+  }
+
+  void getPContentData() async {
+    var response =
+        await httpsClient.get('api/pcontent?id=${Get.arguments["id"]}');
+    if (response != null) {
+      var tempData = PContentModel.fromJson(response.data);
+      print(response);
+      pContentData.value = tempData.result!;
+      update();
+    }
   }
 }
