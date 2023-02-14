@@ -12,7 +12,7 @@ class ProductContentView extends GetView<ProductContentController> {
       extendBodyBehindAppBar: true, // body内容从状态栏开始，而不是从appbar 开始 实现透明导航
       // appBar 不能直接加obx, 需要使用PreferredSize 包装一下
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ScreenAdapter.width(96)),
+          preferredSize: Size.fromHeight(ScreenAdapter.width(140)),
           child: Obx(() => AppBar(
                 leading: Container(
                   alignment: Alignment.center,
@@ -20,7 +20,9 @@ class ProductContentView extends GetView<ProductContentController> {
                     width: ScreenAdapter.width(88),
                     height: ScreenAdapter.width(88),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.back();
+                      },
                       style: ButtonStyle(
                         alignment: Alignment.center,
                         // ElevatedButton 里边的ButtonStyle 有默认的padding 需要设置为0 ，alignment 才会生效
@@ -44,65 +46,74 @@ class ProductContentView extends GetView<ProductContentController> {
                 title: SizedBox(
                   width: ScreenAdapter.width(400),
                   height: ScreenAdapter.height(96),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '商品',
-                              style: TextStyle(
-                                  fontSize: ScreenAdapter.fontSize(42)),
-                            ),
-                            Container(
-                              width: ScreenAdapter.width(70),
-                              height: ScreenAdapter.width(4),
-                              color: Colors.red,
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '详情',
-                              style: TextStyle(
-                                  fontSize: ScreenAdapter.fontSize(42)),
-                            ),
-                            Container(
-                              width: ScreenAdapter.width(70),
-                              height: ScreenAdapter.width(4),
-                              color: Colors.red,
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '推荐',
-                              style: TextStyle(
-                                  fontSize: ScreenAdapter.fontSize(42)),
-                            ),
-                            Container(
-                              width: ScreenAdapter.width(70),
-                              height: ScreenAdapter.width(4),
-                              color: Colors.red,
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: Obx(() => controller.showTabs.value
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: controller.tabsList
+                              .map((e) => InkWell(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '${e['title']}',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    ScreenAdapter.fontSize(42),
+                                                fontWeight: e['id'] ==
+                                                        controller
+                                                            .selectTabsIndex
+                                                            .value
+                                                    ? FontWeight.bold
+                                                    : FontWeight.normal),
+                                          ),
+                                          controller.selectTabsIndex == e['id']
+                                              ? Container(
+                                                  width:
+                                                      ScreenAdapter.width(70),
+                                                  height:
+                                                      ScreenAdapter.width(6),
+                                                  margin: EdgeInsets.only(
+                                                      top: ScreenAdapter.height(
+                                                          5)),
+                                                  color: Colors.red,
+                                                )
+                                              : const SizedBox()
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      controller.changeSelectIndex(e['id']);
+                                      switch (e['id']) {
+                                        case 1:
+                                          Scrollable.ensureVisible(
+                                              controller.gk1.currentContext
+                                                  as BuildContext,
+                                              duration: const Duration(
+                                                  milliseconds: 300));
+                                          break;
+                                        case 2:
+                                          Scrollable.ensureVisible(
+                                              controller.gk2.currentContext
+                                                  as BuildContext,
+                                              duration: const Duration(
+                                                  milliseconds: 300));
+                                          break;
+                                        case 3:
+                                          Scrollable.ensureVisible(
+                                              controller.gk3.currentContext
+                                                  as BuildContext,
+                                              duration: const Duration(
+                                                  milliseconds: 300));
+                                          break;
+                                      }
+                                    },
+                                  ))
+                              .toList(),
+                        )
+                      : const SizedBox()),
                 ),
                 centerTitle: true,
                 backgroundColor: Colors.white.withOpacity(controller
@@ -161,69 +172,45 @@ class ProductContentView extends GetView<ProductContentController> {
                   ),
                 ],
               ))),
-      body: ListView(
+      body: SingleChildScrollView(
         controller: controller.scrollController,
-        children: [
-          Container(
-            width: ScreenAdapter.width(1080),
-            height: ScreenAdapter.height(300),
-            color: Colors.orange,
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-          const ListTile(
-            title: Text('111111111111'),
-          ),
-        ],
+        child: Column(
+          children: [
+            Container(
+              key: controller.gk1,
+              height: ScreenAdapter.height(900),
+              color: Colors.orange,
+              child: Center(
+                child: Text(
+                  '商品',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+            ),
+            Container(
+              key: controller.gk2,
+              height: ScreenAdapter.height(1800),
+              color: Colors.blue,
+              child: Center(
+                child: Text(
+                  '详情',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+            ),
+            Container(
+              key: controller.gk3,
+              height: ScreenAdapter.height(1800),
+              color: Colors.red,
+              child: Center(
+                child: Text(
+                  '推荐',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
