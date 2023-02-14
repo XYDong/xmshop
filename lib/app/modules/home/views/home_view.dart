@@ -81,7 +81,7 @@ class HomeView extends GetView<HomeController> {
               backgroundColor: controller.flag.value
                   ? Colors.white
                   : Colors.transparent, // 透明状态栏
-              elevation: 0, // 透明度
+              elevation: 0, // 阴影
               actions: [
                 IconButton(
                     onPressed: () {},
