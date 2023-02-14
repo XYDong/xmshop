@@ -201,7 +201,7 @@ class ProductContentView extends GetView<ProductContentController> {
       controller: controller.scrollController,
       child: Column(
         children: [
-          FirstPageView(),
+          FirstPageView(showAttr),
           SecondPageView(),
           ThirdPageView(),
         ],
@@ -239,7 +239,9 @@ class ProductContentView extends GetView<ProductContentController> {
                   child: Container(
                 margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showAttr();
+                  },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(255, 165, 0, 0.9)),
@@ -255,7 +257,9 @@ class ProductContentView extends GetView<ProductContentController> {
                   child: Container(
                 margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showAttr();
+                  },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(253, 1, 0, 0.9)),
@@ -270,6 +274,57 @@ class ProductContentView extends GetView<ProductContentController> {
             ],
           ),
         ));
+  }
+
+  void showAttr() {
+    Get.bottomSheet(Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(ScreenAdapter.width(20)),
+      width: double.infinity,
+      height: ScreenAdapter.height(1200),
+      child: ListView(
+        children: [
+          Wrap(
+            children: controller.pContentData.value.attr!
+                .map((value) => Wrap(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(
+                              top: ScreenAdapter.height(20),
+                              left: ScreenAdapter.width(20)),
+                          width: ScreenAdapter.width(1040),
+                          child: Text("${value.cate}",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                              top: ScreenAdapter.height(20),
+                              left: ScreenAdapter.width(20)),
+                          width: ScreenAdapter.width(1040),
+                          child: Wrap(
+                            children: value.list!
+                                .map((e) => Container(
+                                      margin: EdgeInsets.all(
+                                          ScreenAdapter.width(20)),
+                                      child: Chip(
+                                          padding: EdgeInsets.only(
+                                              left: ScreenAdapter.width(20),
+                                              right: ScreenAdapter.width(20)),
+                                          backgroundColor: const Color.fromARGB(
+                                              31, 223, 213, 213),
+                                          label: Text(e)),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    ));
   }
 
   @override

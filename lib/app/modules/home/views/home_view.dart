@@ -421,51 +421,57 @@ class HomeView extends GetView<HomeController> {
                 shrinkWrap: true, // 收缩，让子元素自适应
                 physics: const NeverScrollableScrollPhysics(), // 禁止滑动
                 itemBuilder: (context, index) {
-                  return Container(
-                    // height: 50 + 150 * Random().nextDouble(),
-                    padding:
-                        EdgeInsets.fromLTRB(ScreenAdapter.width(20), 0, 0, 0),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      // border: Border.all(color: Colors.black87, width: 1)
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          child: Image.network(HttpsClient.replaceUri(
-                              controller.bestPlist[index].sPic)),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Text('${controller.bestPlist[index].title}',
+                  return InkWell(
+                    onTap: () {
+                      Get.toNamed('/product-content',
+                          arguments: {'id': controller.bestPlist[index].sId});
+                    },
+                    child: Container(
+                      // height: 50 + 150 * Random().nextDouble(),
+                      padding:
+                          EdgeInsets.fromLTRB(ScreenAdapter.width(20), 0, 0, 0),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        // border: Border.all(color: Colors.black87, width: 1)
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Image.network(HttpsClient.replaceUri(
+                                controller.bestPlist[index].sPic)),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Text('${controller.bestPlist[index].title}',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: ScreenAdapter.fontSize(42),
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.all(ScreenAdapter.height(10)),
+                            child: Text(
+                              '${controller.bestPlist[index].subTitle}',
                               textAlign: TextAlign.start,
                               style: TextStyle(
-                                  fontSize: ScreenAdapter.fontSize(42),
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.all(ScreenAdapter.height(10)),
-                          child: Text(
-                            '${controller.bestPlist[index].subTitle}',
-                            textAlign: TextAlign.start,
-                            style:
-                                TextStyle(fontSize: ScreenAdapter.fontSize(32)),
+                                  fontSize: ScreenAdapter.fontSize(32)),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            '￥${controller.bestPlist[index].price}元',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: ScreenAdapter.fontSize(32),
-                                fontWeight: FontWeight.bold),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              '￥${controller.bestPlist[index].price}元',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: ScreenAdapter.fontSize(32),
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },

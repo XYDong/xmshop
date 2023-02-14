@@ -33,6 +33,8 @@ class ProductContentController extends GetxController {
   // 商品详情数据
   Rx<ContentModel> pContentData = ContentModel().obs;
 
+  GlobalKey gk4 = GlobalKey();
+
   @override
   void onInit() {
     super.onInit();
