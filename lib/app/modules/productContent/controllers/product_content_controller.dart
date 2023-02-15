@@ -44,6 +44,18 @@ class ProductContentController extends GetxController {
   // 是否显示详情tab切换
   RxBool showSubHeaderTabs = false.obs;
 
+  // 商品详情tab切换
+  List subTabsList = [
+    {
+      "id": 1,
+      "title": "商品介绍",
+    },
+    {"id": 2, "title": "规格参数"},
+  ];
+
+  // 商品详情选中
+  RxInt selectSubTabsIndex = 1.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -79,14 +91,26 @@ class ProductContentController extends GetxController {
       //     showSubHeaderTabs.value = false;
       //   }
       // }
+      //显示隐藏详情 subHeader tab切换
       if (scrollController.position.pixels > gk2Position &&
           scrollController.position.pixels < gk3Position) {
-        if (!showSubHeaderTabs.value) {
+        if (showSubHeaderTabs.value == false) {
           showSubHeaderTabs.value = true;
+          selectTabsIndex.value = 2;
+          update();
         }
-      } else {
-        if (showSubHeaderTabs.value) {
+      } else if (scrollController.position.pixels > 0 &&
+          scrollController.position.pixels < gk2Position) {
+        if (showSubHeaderTabs.value == true) {
           showSubHeaderTabs.value = false;
+          selectTabsIndex.value = 1;
+          update();
+        }
+      } else if (scrollController.position.pixels > gk2Position) {
+        if (showSubHeaderTabs.value == true) {
+          showSubHeaderTabs.value = false;
+          selectTabsIndex.value = 3;
+          update();
         }
       }
       // 显示隐藏顶部tab切换
@@ -171,6 +195,13 @@ class ProductContentController extends GetxController {
         }
       }
     }
+    update();
+  }
+
+  void changeSelectSubIndex(index) {
+    selectSubTabsIndex.value = index;
+    // 跳转到指定位置
+    scrollController.jumpTo(gk2Position);
     update();
   }
 }

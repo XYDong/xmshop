@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xmshop/app/modules/productContent/views/first_page_view.dart';
@@ -81,21 +83,45 @@ class ProductContentView extends GetView<ProductContentController> {
                                         controller.gk1.currentContext
                                             as BuildContext,
                                         duration:
-                                            const Duration(milliseconds: 300));
+                                            const Duration(milliseconds: 100));
                                     break;
                                   case 2:
                                     Scrollable.ensureVisible(
                                         controller.gk2.currentContext
                                             as BuildContext,
                                         duration:
-                                            const Duration(milliseconds: 300));
+                                            const Duration(milliseconds: 100));
+                                    //修正
+                                    Timer.periodic(
+                                        const Duration(milliseconds: 101),
+                                        (timer) {
+                                      controller.scrollController.jumpTo(
+                                          controller.scrollController.position
+                                                  .pixels -
+                                              ScreenAdapter.height(140) -
+                                              ScreenAdapter
+                                                  .getStatusBarHeight());
+                                      timer.cancel();
+                                    });
                                     break;
                                   case 3:
                                     Scrollable.ensureVisible(
                                         controller.gk3.currentContext
                                             as BuildContext,
                                         duration:
-                                            const Duration(milliseconds: 300));
+                                            const Duration(milliseconds: 100));
+                                    //修正
+                                    Timer.periodic(
+                                        const Duration(milliseconds: 101),
+                                        (timer) {
+                                      controller.scrollController.jumpTo(
+                                          controller.scrollController.position
+                                                  .pixels -
+                                              ScreenAdapter.height(140) -
+                                              ScreenAdapter
+                                                  .getStatusBarHeight());
+                                      timer.cancel();
+                                    });
                                     break;
                                 }
                               },
@@ -349,23 +375,24 @@ class ProductContentView extends GetView<ProductContentController> {
       height: ScreenAdapter.height(120),
       color: Colors.white,
       child: Row(
-        children: [
-          Expanded(
-              flex: 1,
-              child: Container(
-                alignment: Alignment.center,
-                child: const Text(
-                  '商品介绍',
-                  style: TextStyle(color: Colors.red),
-                ),
-              )),
-          Expanded(
-              flex: 1,
-              child: Container(
-                alignment: Alignment.center,
-                child: const Text('规格参数'),
-              )),
-        ],
+        children: controller.subTabsList
+            .map((e) => Expanded(
+                flex: 1,
+                child: InkWell(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${e['title']}',
+                      style: e['id'] == controller.selectSubTabsIndex.value
+                          ? const TextStyle(color: Colors.red)
+                          : const TextStyle(color: Colors.black54),
+                    ),
+                  ),
+                  onTap: () {
+                    controller.changeSelectSubIndex(e['id']);
+                  },
+                )))
+            .toList(),
       ),
     );
   }
