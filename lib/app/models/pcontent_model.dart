@@ -101,12 +101,14 @@ class ContentModel {
 class PContentAttrModel {
   String? cate;
   List<String>? list;
+  List<Map>? attrList;
 
   PContentAttrModel({this.cate, this.list});
 
   PContentAttrModel.fromJson(Map<String, dynamic> json) {
     cate = json['cate'];
     list = json['list'].cast<String>();
+    attrList = [];
   }
 
   Map<String, dynamic> toJson() {

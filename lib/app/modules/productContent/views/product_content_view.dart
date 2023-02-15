@@ -277,53 +277,70 @@ class ProductContentView extends GetView<ProductContentController> {
   }
 
   void showAttr() {
-    Get.bottomSheet(Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(ScreenAdapter.width(20)),
-      width: double.infinity,
-      height: ScreenAdapter.height(1200),
-      child: ListView(
-        children: [
-          Wrap(
-            children: controller.pContentData.value.attr!
-                .map((value) => Wrap(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(
-                              top: ScreenAdapter.height(20),
-                              left: ScreenAdapter.width(20)),
-                          width: ScreenAdapter.width(1040),
-                          child: Text("${value.cate}",
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              top: ScreenAdapter.height(20),
-                              left: ScreenAdapter.width(20)),
-                          width: ScreenAdapter.width(1040),
-                          child: Wrap(
-                            children: value.list!
-                                .map((e) => Container(
-                                      margin: EdgeInsets.all(
-                                          ScreenAdapter.width(20)),
-                                      child: Chip(
-                                          padding: EdgeInsets.only(
-                                              left: ScreenAdapter.width(20),
-                                              right: ScreenAdapter.width(20)),
-                                          backgroundColor: const Color.fromARGB(
-                                              31, 223, 213, 213),
-                                          label: Text(e)),
-                                    ))
-                                .toList(),
-                          ),
-                        ),
-                      ],
-                    ))
-                .toList(),
-          )
-        ],
-      ),
+    // 在bottomsheet里边更新流数据，需要使用GetBuilder，直接使用obx 是无效的
+    Get.bottomSheet(GetBuilder<ProductContentController>(
+      init: controller,
+      builder: (controller) {
+        return Container(
+          color: Colors.white,
+          padding: EdgeInsets.all(ScreenAdapter.width(20)),
+          width: double.infinity,
+          height: ScreenAdapter.height(1200),
+          child: ListView(
+            children: [
+              Wrap(
+                children: controller.pContentData.value.attr!
+                    .map((value) => Wrap(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(
+                                  top: ScreenAdapter.height(20),
+                                  left: ScreenAdapter.width(20)),
+                              width: ScreenAdapter.width(1040),
+                              child: Text("${value.cate}",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(
+                                  top: ScreenAdapter.height(20),
+                                  left: ScreenAdapter.width(20)),
+                              width: ScreenAdapter.width(1040),
+                              child: Wrap(
+                                children: value.attrList!
+                                    .map((e) => Container(
+                                          margin: EdgeInsets.all(
+                                              ScreenAdapter.width(20)),
+                                          child: InkWell(
+                                            child: Chip(
+                                                padding: EdgeInsets.only(
+                                                    left:
+                                                        ScreenAdapter.width(20),
+                                                    right: ScreenAdapter.width(
+                                                        20)),
+                                                backgroundColor: e['checked']
+                                                    ? const Color.fromARGB(
+                                                        255, 227, 15, 15)
+                                                    : const Color.fromARGB(
+                                                        31, 223, 213, 213),
+                                                label: Text('${e['title']}')),
+                                            onTap: () {
+                                              controller.changeAttr(
+                                                  value.cate, e['title']);
+                                            },
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        ))
+                    .toList(),
+              )
+            ],
+          ),
+        );
+      },
     ));
   }
 

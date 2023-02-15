@@ -33,7 +33,8 @@ class ProductContentController extends GetxController {
   // 商品详情数据
   Rx<ContentModel> pContentData = ContentModel().obs;
 
-  GlobalKey gk4 = GlobalKey();
+  // 筛选的单选实现
+  RxList<PContentAttrModel> pContentAttr = <PContentAttrModel>[].obs;
 
   @override
   void onInit() {
@@ -80,7 +81,37 @@ class ProductContentController extends GetxController {
       var tempData = PContentModel.fromJson(response.data);
       print(response);
       pContentData.value = tempData.result!;
+      pContentAttr.value = tempData.result!.attr!;
+      initAttr(pContentAttr);
       update();
     }
+  }
+
+  // 初始化attr
+  initAttr(RxList<PContentAttrModel> attr) {
+    for (int i = 0; i < attr.length; i++) {
+      for (int i1 = 0; i1 < attr[i].list!.length; i1++) {
+        if (i1 == 0) {
+          attr[i].attrList!.add({"title": attr[i].list![i1], "checked": true});
+        } else {
+          attr[i].attrList!.add({"title": attr[i].list![i1], "checked": false});
+        }
+      }
+    }
+  }
+
+  // 改变选中attr
+  changeAttr(cate, title) {
+    for (int i = 0; i < pContentAttr.length; i++) {
+      if (pContentAttr[i].cate == cate) {
+        for (int i1 = 0; i1 < pContentAttr[i].attrList!.length; i1++) {
+          pContentAttr[i].attrList![i1]['checked'] = false;
+          if (pContentAttr[i].attrList![i1]['title'] == title) {
+            pContentAttr[i].attrList![i1]['checked'] = true;
+          }
+        }
+      }
+    }
+    update();
   }
 }
