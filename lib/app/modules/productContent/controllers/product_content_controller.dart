@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xmshop/app/models/pcontent_model.dart';
 import 'package:xmshop/app/services/httpsClient.dart';
+import 'package:xmshop/app/services/screenAdapter.dart';
 
 class ProductContentController extends GetxController {
   ScrollController scrollController = ScrollController();
@@ -11,7 +12,7 @@ class ProductContentController extends GetxController {
   // 顶部tba是否展示，滚动到内容区域的时候再显示
   RxBool showTabs = false.obs;
 
-  // 商品展示内容
+  // 顶部tab切换
   List tabsList = [
     {
       "id": 1,
@@ -36,6 +37,13 @@ class ProductContentController extends GetxController {
   // 筛选的单选实现
   RxList<PContentAttrModel> pContentAttr = <PContentAttrModel>[].obs;
 
+  //详情container 的位置
+  double gk2Position = 0.0;
+  double gk3Position = 0.0;
+
+  // 是否显示详情tab切换
+  RxBool showSubHeaderTabs = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -52,10 +60,44 @@ class ProductContentController extends GetxController {
 
   void scrollControllerListener() {
     scrollController.addListener(() {
+      // 获取元素渲染后的位置
+      if (gk2Position == 0 && gk3Position == 0) {
+        //获取Container高度的时候获取的是距离顶部的高度，如果要从0开始计算要加下滚动条下拉的高度
+        getContainerPosition(scrollController.position.pixels);
+      }
+      //显示隐藏详情 subHeader tab切换
+      // if (scrollController.position.pixels >
+      //         gk2Position -
+      //             ScreenAdapter.getStatusBarHeight() -
+      //             ScreenAdapter.height(138) &&
+      //     scrollController.position.pixels < gk3Position) {
+      //   if (!showSubHeaderTabs.value) {
+      //     showSubHeaderTabs.value = true;
+      //   }
+      // } else {
+      //   if (showSubHeaderTabs.value) {
+      //     showSubHeaderTabs.value = false;
+      //   }
+      // }
+      if (scrollController.position.pixels > gk2Position &&
+          scrollController.position.pixels < gk3Position) {
+        if (!showSubHeaderTabs.value) {
+          showSubHeaderTabs.value = true;
+        }
+      } else {
+        if (showSubHeaderTabs.value) {
+          showSubHeaderTabs.value = false;
+        }
+      }
+      // 显示隐藏顶部tab切换
       // 获取滚动高度
       // && scrollController.position.pixels < 20
       if (scrollController.position.pixels <= 100) {
         opacity.value = scrollController.position.pixels / 100;
+        print(opacity.value);
+        if (opacity.value > 0.978) {
+          opacity.value = 1;
+        }
         if (showTabs.value && scrollController.position.pixels == 0) {
           showTabs.value = false;
         }
@@ -67,6 +109,23 @@ class ProductContentController extends GetxController {
         }
       }
     });
+  }
+
+  // 获取元素位置 (固定写法)
+  //必须要元素渲染完成后才能获取
+  getContainerPosition(pixels) {
+    RenderBox box2 = gk2.currentContext!.findRenderObject() as RenderBox;
+    RenderBox box3 = gk3.currentContext!.findRenderObject() as RenderBox;
+    // 获取纵轴的位置
+    gk2Position = box2.localToGlobal(Offset.zero).dy +
+        pixels -
+        (ScreenAdapter.height(140) + ScreenAdapter.getStatusBarHeight());
+    gk3Position = box3.localToGlobal(Offset.zero).dy +
+        pixels -
+        (ScreenAdapter.height(140) + ScreenAdapter.getStatusBarHeight());
+
+    print(gk2Position);
+    print(gk3Position);
   }
 
   void changeSelectIndex(index) {

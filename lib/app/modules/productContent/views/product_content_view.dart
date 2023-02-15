@@ -202,7 +202,7 @@ class ProductContentView extends GetView<ProductContentController> {
       child: Column(
         children: [
           FirstPageView(showAttr),
-          SecondPageView(),
+          SecondPageView(_subHeader),
           ThirdPageView(),
         ],
       ),
@@ -344,18 +344,52 @@ class ProductContentView extends GetView<ProductContentController> {
     ));
   }
 
+  Widget _subHeader() {
+    return Container(
+      height: ScreenAdapter.height(120),
+      color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.center,
+                child: const Text(
+                  '商品介绍',
+                  style: TextStyle(color: Colors.red),
+                ),
+              )),
+          Expanded(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.center,
+                child: const Text('规格参数'),
+              )),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true, // body内容从状态栏开始，而不是从appbar 开始 实现透明导航
       // appBar 不能直接加obx, 需要使用PreferredSize 包装一下
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ScreenAdapter.width(140)),
+          preferredSize: Size.fromHeight(ScreenAdapter.height(140)),
           child: _appBar(context)),
       body: Stack(
         children: [
           _body(),
           _bottom(),
+          Obx(() => controller.showSubHeaderTabs.value
+              ? Positioned(
+                  left: 0,
+                  top: ScreenAdapter.getStatusBarHeight() +
+                      ScreenAdapter.height(138),
+                  right: 0,
+                  child: _subHeader())
+              : const SizedBox()),
         ],
       ),
     );
