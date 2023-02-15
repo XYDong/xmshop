@@ -15,6 +15,7 @@ class ThirdPageView extends GetView {
       key: controller.gk3,
       height: ScreenAdapter.height(1800),
       color: Colors.red,
+      margin: EdgeInsets.only(bottom: ScreenAdapter.height(200)),
       child: const Center(
         child: Text(
           '推荐',
