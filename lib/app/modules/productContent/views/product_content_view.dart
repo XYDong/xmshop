@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/modules/productContent/views/cart_item_num_view.dart';
 import 'package:xmshop/app/modules/productContent/views/first_page_view.dart';
 import 'package:xmshop/app/modules/productContent/views/second_page_view.dart';
 import 'package:xmshop/app/modules/productContent/views/third_page_view.dart';
@@ -227,7 +228,7 @@ class ProductContentView extends GetView<ProductContentController> {
       controller: controller.scrollController,
       child: Column(
         children: [
-          FirstPageView(showAttr),
+          FirstPageView(showBottomAttr),
           SecondPageView(_subHeader),
           ThirdPageView(),
         ],
@@ -261,49 +262,16 @@ class ProductContentView extends GetView<ProductContentController> {
                   ],
                 ),
               ),
-              Expanded(
-                  child: Container(
-                margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
-                child: ElevatedButton(
-                  onPressed: () {
-                    showAttr();
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(255, 165, 0, 0.9)),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                      shape: MaterialStateProperty.all(
-                          // CircleBorder()
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)))),
-                  child: const Text('加入购物车'),
-                ),
-              )),
-              Expanded(
-                  child: Container(
-                margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
-                child: ElevatedButton(
-                  onPressed: () {
-                    showAttr();
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(253, 1, 0, 0.9)),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                      shape: MaterialStateProperty.all(
-                          // CircleBorder()
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)))),
-                  child: const Text('立即购买'),
-                ),
-              )),
+              addCartView(3),
+              byNowView(2),
             ],
           ),
         ));
   }
 
-  void showAttr() {
-    // 在bottomsheet里边更新流数据，需要使用GetBuilder，直接使用obx 是无效的
+  // action 1 筛选属性 2加入购物车 3立即购买
+  void showBottomAttr(int action) {
+    // 在bottomSheet里边更新流数据，需要使用GetBuilder，直接使用obx 是无效的
     Get.bottomSheet(GetBuilder<ProductContentController>(
       init: controller,
       builder: (controller) {
@@ -312,57 +280,115 @@ class ProductContentView extends GetView<ProductContentController> {
           padding: EdgeInsets.all(ScreenAdapter.width(20)),
           width: double.infinity,
           height: ScreenAdapter.height(1200),
-          child: ListView(
+          child: Stack(
             children: [
-              Wrap(
-                children: controller.pContentData.value.attr!
-                    .map((value) => Wrap(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: ScreenAdapter.height(20),
-                                  left: ScreenAdapter.width(20)),
-                              width: ScreenAdapter.width(1040),
-                              child: Text("${value.cate}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: ScreenAdapter.height(20),
-                                  left: ScreenAdapter.width(20)),
-                              width: ScreenAdapter.width(1040),
-                              child: Wrap(
-                                children: value.attrList!
-                                    .map((e) => Container(
-                                          margin: EdgeInsets.all(
-                                              ScreenAdapter.width(20)),
-                                          child: InkWell(
-                                            child: Chip(
-                                                padding: EdgeInsets.only(
-                                                    left:
-                                                        ScreenAdapter.width(20),
-                                                    right: ScreenAdapter.width(
-                                                        20)),
-                                                backgroundColor: e['checked']
-                                                    ? const Color.fromARGB(
-                                                        255, 227, 15, 15)
-                                                    : const Color.fromARGB(
-                                                        31, 223, 213, 213),
-                                                label: Text('${e['title']}')),
-                                            onTap: () {
-                                              controller.changeAttr(
-                                                  value.cate, e['title']);
-                                            },
-                                          ),
-                                        ))
-                                    .toList(),
+              ListView(
+                children: [
+                  ...controller.pContentData.value.attr!
+                      .map((value) => Wrap(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(
+                                    top: ScreenAdapter.height(20),
+                                    left: ScreenAdapter.width(20)),
+                                width: ScreenAdapter.width(1040),
+                                child: Text("${value.cate}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
                               ),
-                            ),
+                              Container(
+                                padding: EdgeInsets.only(
+                                    top: ScreenAdapter.height(20),
+                                    left: ScreenAdapter.width(20)),
+                                width: ScreenAdapter.width(1040),
+                                child: Wrap(
+                                  children: value.attrList!
+                                      .map((e) => Container(
+                                            margin: EdgeInsets.all(
+                                                ScreenAdapter.width(20)),
+                                            child: InkWell(
+                                              child: Chip(
+                                                  padding: EdgeInsets.only(
+                                                      left: ScreenAdapter.width(
+                                                          20),
+                                                      right:
+                                                          ScreenAdapter.width(
+                                                              20)),
+                                                  backgroundColor: e['checked']
+                                                      ? Colors.red
+                                                      : const Color.fromARGB(
+                                                          31, 223, 213, 213),
+                                                  label: Text(
+                                                    '${e['title']}',
+                                                    style: TextStyle(
+                                                        color: e['checked']
+                                                            ? Colors.white
+                                                            : Colors.black87),
+                                                  )),
+                                              onTap: () {
+                                                controller.changeAttr(
+                                                    value.cate, e['title']);
+                                              },
+                                            ),
+                                          ))
+                                      .toList(),
+                                ),
+                              ),
+                            ],
+                          ))
+                      .toList(),
+                  Padding(
+                    padding: EdgeInsets.all(ScreenAdapter.height(20)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          '数量：',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        CartItemNumView()
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      Get.back();
+                      // 清空选中
+                    },
+                  )),
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: action == 1
+                      ? Row(
+                          children: [
+                            addCartView(1),
+                            byNowView(1),
                           ],
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            if (action == 2) {
+                              _addCart();
+                            } else {
+                              _buyNow();
+                            }
+                          },
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red),
+                            foregroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                          ),
+                          child: const Text('确定'),
                         ))
-                    .toList(),
-              )
             ],
           ),
         );
@@ -395,6 +421,70 @@ class ProductContentView extends GetView<ProductContentController> {
             .toList(),
       ),
     );
+  }
+
+  /// 立即购买
+  Widget byNowView(int action) {
+    return Expanded(
+        child: Container(
+      margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
+      child: ElevatedButton(
+        onPressed: () {
+          if (action == 1) {
+            _buyNow();
+          } else {
+            showBottomAttr(3);
+          }
+        },
+        style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all(const Color.fromRGBO(253, 1, 0, 0.9)),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(
+                // CircleBorder()
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)))),
+        child: const Text('立即购买'),
+      ),
+    ));
+  }
+
+  /// 加入购物车
+  Widget addCartView(int action) {
+    return Expanded(
+        child: Container(
+      margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
+      child: ElevatedButton(
+        onPressed: () {
+          if (action == 1) {
+            _addCart();
+          } else {
+            showBottomAttr(2);
+          }
+        },
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+                const Color.fromRGBO(255, 165, 0, 0.9)),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(
+                // CircleBorder()
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)))),
+        child: const Text('加入购物车'),
+      ),
+    ));
+  }
+
+  _addCart() {
+    print('加入购物车:商品数量：${controller.selectNum.value}');
+    controller.getSelectedAttr();
+    Get.back();
+  }
+
+  _buyNow() {
+    print('立即购买:商品数量：${controller.selectNum.value}');
+    controller.getSelectedAttr();
+    Get.back();
   }
 
   @override

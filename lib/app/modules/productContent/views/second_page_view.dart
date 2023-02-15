@@ -17,25 +17,28 @@ class SecondPageView extends GetView {
         child: Column(
           children: [
             Obx(() => subHeader()),
-            Obx(() => controller.selectSubTabsIndex.value == 1
-                ? Container(
-                    alignment: Alignment.center,
-                    child: Html(
-                      data: controller.pContentData.value.content,
-                      style: {
-                        "body": Style(backgroundColor: Colors.white),
-                        "p": Style(fontSize: FontSize.large)
-                      },
-                    ),
-                  )
-                : Container(
-                    alignment: Alignment.center,
-                    child:
-                        Html(data: controller.pContentData.value.specs, style: {
-                      "body": Style(backgroundColor: Colors.white),
-                      "p": Style(fontSize: FontSize.large)
-                    }),
-                  ))
+            Obx(() => controller.pContentData.value.content != null
+                ? controller.selectSubTabsIndex.value == 1
+                    ? Container(
+                        alignment: Alignment.center,
+                        child: Html(
+                          data: controller.pContentData.value.content!,
+                          style: {
+                            "body": Style(backgroundColor: Colors.white),
+                            "p": Style(fontSize: FontSize.large)
+                          },
+                        ),
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        child: Html(
+                            data: controller.pContentData.value.specs!,
+                            style: {
+                              "body": Style(backgroundColor: Colors.white),
+                              "p": Style(fontSize: FontSize.large)
+                            }),
+                      )
+                : SizedBox())
           ],
         ),
       ),

@@ -56,6 +56,12 @@ class ProductContentController extends GetxController {
   // 商品详情选中
   RxInt selectSubTabsIndex = 1.obs;
 
+  // 获取选中的属性值
+  RxString selectedAttr = ''.obs;
+
+  // 加入购物车或者购买的数量
+  RxInt selectNum = 1.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -135,8 +141,8 @@ class ProductContentController extends GetxController {
     });
   }
 
-  // 获取元素位置 (固定写法)
-  //必须要元素渲染完成后才能获取
+  /// 获取元素位置 (固定写法)
+  ///必须要元素渲染完成后才能获取
   getContainerPosition(pixels) {
     RenderBox box2 = gk2.currentContext!.findRenderObject() as RenderBox;
     RenderBox box3 = gk3.currentContext!.findRenderObject() as RenderBox;
@@ -165,12 +171,13 @@ class ProductContentController extends GetxController {
       print(response);
       pContentData.value = tempData.result!;
       pContentAttr.value = tempData.result!.attr!;
-      initAttr(pContentAttr);
+      initAttr(pContentAttr); // 初始化商品属性
+      getSelectedAttr(); // 获取商品属性
       update();
     }
   }
 
-  // 初始化attr
+  /// 初始化attr
   initAttr(RxList<PContentAttrModel> attr) {
     for (int i = 0; i < attr.length; i++) {
       for (int i1 = 0; i1 < attr[i].list!.length; i1++) {
@@ -183,7 +190,7 @@ class ProductContentController extends GetxController {
     }
   }
 
-  // 改变选中attr
+  /// 改变选中attr
   changeAttr(cate, title) {
     for (int i = 0; i < pContentAttr.length; i++) {
       if (pContentAttr[i].cate == cate) {
@@ -198,10 +205,35 @@ class ProductContentController extends GetxController {
     update();
   }
 
+  /// 获取选中的值
+  getSelectedAttr() {
+    List temp = [];
+    for (int i = 0; i < pContentAttr.length; i++) {
+      for (int i1 = 0; i1 < pContentAttr[i].attrList!.length; i1++) {
+        if (pContentAttr[i].attrList![i1]['checked']) {
+          temp.add(pContentAttr[i].attrList![i1]['title']);
+        }
+      }
+    }
+    selectedAttr.value = temp.join(',');
+    update();
+  }
+
+  /// 改变选择的商品介绍
   void changeSelectSubIndex(index) {
     selectSubTabsIndex.value = index;
     // 跳转到指定位置
     scrollController.jumpTo(gk2Position);
+    update();
+  }
+
+  /// 改变购买数量
+  changeSelectNum(int num) {
+    if (selectNum.value < 1 || selectNum.value + num < 1) {
+      selectNum.value = 1;
+    } else {
+      selectNum.value += num;
+    }
     update();
   }
 }
