@@ -19,7 +19,16 @@ class CartView extends GetView {
         elevation: 0,
         title: const Text('购物车'),
         centerTitle: true,
-        actions: [TextButton(onPressed: () {}, child: const Text("编辑"))],
+        actions: [
+          Obx(() => TextButton(
+              onPressed: () {
+                controller.changeShowEdit();
+              },
+              child: Text(
+                controller.showEdit.value ? "取消编辑" : "编辑",
+                style: const TextStyle(color: Colors.black87),
+              )))
+        ],
       ),
       body: GetBuilder<CartController>(
         init: controller,
@@ -56,11 +65,12 @@ class CartView extends GetView {
                             children: [
                               Row(
                                 children: [
-                                  Checkbox(
-                                      value: true,
+                                  Obx(() => Checkbox(
+                                      activeColor: Colors.red,
+                                      value: controller.checkedAll.value,
                                       onChanged: (value) {
-                                        print(value);
-                                      }),
+                                        controller.checkedAllCartItem(value);
+                                      })),
                                   const Text("全选")
                                 ],
                               ),

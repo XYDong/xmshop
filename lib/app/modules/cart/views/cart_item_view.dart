@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/modules/cart/controllers/cart_controller.dart';
 import 'package:xmshop/app/services/httpsClient.dart';
 
 import '../../../services/screenAdapter.dart';
 import 'cart_item_num_view.dart';
 
 class CartItemView extends GetView {
+  @override
+  final CartController controller = Get.find();
   Map cartItem;
   CartItemView(this.cartItem, {Key? key}) : super(key: key);
   @override
@@ -21,11 +24,17 @@ class CartItemView extends GetView {
       ),
       child: Row(
         children: [
-          SizedBox(
-            width: ScreenAdapter.width(100),
-            child: Checkbox(
-                activeColor: Colors.red, value: false, onChanged: (value) {}),
-          ),
+          Obx(() => controller.showEdit.value
+              ? SizedBox(
+                  width: ScreenAdapter.width(100),
+                  child: Checkbox(
+                      activeColor: Colors.red,
+                      value: cartItem['checked'],
+                      onChanged: (value) {
+                        controller.checkCartItem(cartItem);
+                      }),
+                )
+              : const SizedBox()),
           Container(
             width: ScreenAdapter.width(260),
             padding: EdgeInsets.all(ScreenAdapter.height(24)),
