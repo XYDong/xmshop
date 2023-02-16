@@ -13,7 +13,7 @@ class TabsController extends GetxController {
     const HomeView(),
     const CategoryView(),
     const GiveView(),
-    const CartView(),
+    CartView(),
     const UserView(),
   ];
   // 页面左右切换

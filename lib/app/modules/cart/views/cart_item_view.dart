@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/services/httpsClient.dart';
 
 import '../../../services/screenAdapter.dart';
 import 'cart_item_num_view.dart';
 
 class CartItemView extends GetView {
-  const CartItemView({Key? key}) : super(key: key);
+  Map cartItem;
+  CartItemView(this.cartItem, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +30,7 @@ class CartItemView extends GetView {
             width: ScreenAdapter.width(260),
             padding: EdgeInsets.all(ScreenAdapter.height(24)),
             margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
-            child: Image.network("https://www.itying.com/images/shouji.png",
+            child: Image.network(HttpsClient.replaceUri(cartItem['pic']),
                 fit: BoxFit.fitHeight),
           ),
           Expanded(
@@ -36,24 +38,24 @@ class CartItemView extends GetView {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "小米11",
+                "${cartItem['title']}",
                 style: TextStyle(
                     fontSize: ScreenAdapter.fontSize(36),
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(height: ScreenAdapter.height(20)),
               Row(
-                children: const [Chip(label: Text("黑色"))],
+                children: [Chip(label: Text("${cartItem['selectedAttr']}"))],
               ),
               SizedBox(height: ScreenAdapter.height(20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("¥98.9",
+                  Text("¥${cartItem['price']}",
                       style: TextStyle(
                           fontSize: ScreenAdapter.fontSize(38),
                           color: Colors.red)),
-                  const CartItemNumView()
+                  CartItemNumView(cartItem)
                 ],
               )
             ],

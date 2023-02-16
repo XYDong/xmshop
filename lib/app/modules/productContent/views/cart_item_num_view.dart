@@ -37,7 +37,7 @@ class CartItemNumView extends GetView {
           alignment: Alignment.center,
           width: ScreenAdapter.width(80),
           height: ScreenAdapter.height(64),
-          child: Text("${controller.selectNum.value}"),
+          child: Text("${controller.buyNum.value}"),
         ));
   }
 

@@ -4,6 +4,8 @@ import 'package:xmshop/app/models/pcontent_model.dart';
 import 'package:xmshop/app/services/httpsClient.dart';
 import 'package:xmshop/app/services/screenAdapter.dart';
 
+import '../../../services/cartServers.dart';
+
 class ProductContentController extends GetxController {
   ScrollController scrollController = ScrollController();
   // 透明度
@@ -60,7 +62,7 @@ class ProductContentController extends GetxController {
   RxString selectedAttr = ''.obs;
 
   // 加入购物车或者购买的数量
-  RxInt selectNum = 1.obs;
+  RxInt buyNum = 1.obs;
 
   @override
   void onInit() {
@@ -229,11 +231,28 @@ class ProductContentController extends GetxController {
 
   /// 改变购买数量
   changeSelectNum(int num) {
-    if (selectNum.value < 1 || selectNum.value + num < 1) {
-      selectNum.value = 1;
+    if (buyNum.value < 1 || buyNum.value + num < 1) {
+      buyNum.value = 1;
     } else {
-      selectNum.value += num;
+      buyNum.value += num;
     }
     update();
+  }
+
+  /// 加入购物车
+  addCart() {
+    print('加入购物车:商品数量：${buyNum.value}');
+    getSelectedAttr();
+    CartServers.addCart(pContentData.value, selectedAttr.value, buyNum.value);
+    Get.back();
+    Get.snackbar('提示', '加入购物车成功',
+        duration: const Duration(seconds: 2), snackPosition: SnackPosition.TOP);
+  }
+
+  /// 立即购买
+  buyNow() {
+    print('立即购买:商品数量：${buyNum.value}');
+    getSelectedAttr();
+    Get.back();
   }
 }

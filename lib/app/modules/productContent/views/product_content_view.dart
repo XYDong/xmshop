@@ -248,19 +248,24 @@ class ProductContentView extends GetView<ProductContentController> {
               border: Border(top: BorderSide(width: 2, color: Colors.black12))),
           child: Row(
             children: [
-              SizedBox(
-                width: ScreenAdapter.width(200),
-                height: ScreenAdapter.height(160),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.shopping_cart),
-                    Text(
-                      "购物车",
-                      style: TextStyle(fontSize: ScreenAdapter.fontSize(32)),
-                    )
-                  ],
+              InkWell(
+                child: SizedBox(
+                  width: ScreenAdapter.width(200),
+                  height: ScreenAdapter.height(160),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.shopping_cart),
+                      Text(
+                        "购物车",
+                        style: TextStyle(fontSize: ScreenAdapter.fontSize(32)),
+                      )
+                    ],
+                  ),
                 ),
+                onTap: () {
+                  Get.toNamed('/cart');
+                },
               ),
               addCartView(3),
               byNowView(2),
@@ -376,9 +381,9 @@ class ProductContentView extends GetView<ProductContentController> {
                       : ElevatedButton(
                           onPressed: () {
                             if (action == 2) {
-                              _addCart();
+                              controller.addCart();
                             } else {
-                              _buyNow();
+                              controller.buyNow();
                             }
                           },
                           style: ButtonStyle(
@@ -431,7 +436,7 @@ class ProductContentView extends GetView<ProductContentController> {
       child: ElevatedButton(
         onPressed: () {
           if (action == 1) {
-            _buyNow();
+            controller.buyNow();
           } else {
             showBottomAttr(3);
           }
@@ -457,7 +462,7 @@ class ProductContentView extends GetView<ProductContentController> {
       child: ElevatedButton(
         onPressed: () {
           if (action == 1) {
-            _addCart();
+            controller.addCart();
           } else {
             showBottomAttr(2);
           }
@@ -473,18 +478,6 @@ class ProductContentView extends GetView<ProductContentController> {
         child: const Text('加入购物车'),
       ),
     ));
-  }
-
-  _addCart() {
-    print('加入购物车:商品数量：${controller.selectNum.value}');
-    controller.getSelectedAttr();
-    Get.back();
-  }
-
-  _buyNow() {
-    print('立即购买:商品数量：${controller.selectNum.value}');
-    controller.getSelectedAttr();
-    Get.back();
   }
 
   @override
