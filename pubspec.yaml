@@ -20,6 +20,8 @@ dependencies:
   shared_preferences: ^2.0.17
 #  html
   flutter_html: ^3.0.0-alpha.6
+#  验证码输入框
+  pin_code_fields: ^7.4.0
 
   flutter: 
     sdk: flutter
@@ -36,6 +38,9 @@ flutter:
     - family: jokerFont
       fonts:
         - asset: assets/fonts/iconfont.ttf
+    - family: userIcon
+      fonts:
+        - asset: assets/fonts/userIconfont.ttf
 #  自定义图片文件
   assets:
     - assets/images/xiaomiBanner.png
@@ -50,4 +55,16 @@ flutter:
     - assets/images/service.png
     - assets/images/2.0x/service.png
     - assets/images/3.0x/service.png
+    - assets/images/user.png
+    - assets/images/2.0x/user.png
+    - assets/images/3.0x/user.png
+    - assets/images/user_ad1.png
+    - assets/images/2.0x/user_ad1.png
+    - assets/images/3.0x/user_ad1.png
+    - assets/images/user_ad2.png
+    - assets/images/2.0x/user_ad2.png
+    - assets/images/3.0x/user_ad2.png
+    - assets/images/logo.png
+    - assets/images/2.0x/logo.png
+    - assets/images/3.0x/logo.png
 

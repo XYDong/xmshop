@@ -26,4 +26,15 @@ class HttpsClient {
       return null;
     }
   }
+
+  Future post(apiUrl, {Map? data}) async {
+    try {
+      var response = await dio.post(apiUrl, data: data);
+      return response;
+    } catch (e) {
+      print(e);
+      print('请求超时');
+      return null;
+    }
+  }
 }
