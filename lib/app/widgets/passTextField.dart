@@ -7,12 +7,14 @@ class PassTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final bool obscureText;
   final TextInputType inputType;
+  final TextEditingController? controller;
   const PassTextField(
       {Key? key,
       required this.hintText,
       this.obscureText = false,
       this.onChanged,
-      this.inputType = TextInputType.text})
+      this.inputType = TextInputType.text,
+      this.controller})
       : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class PassTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(ScreenAdapter.width(40))),
       child: TextField(
         // autofocus: true, // 默认获取焦点，并且弹出键盘
+        controller: controller,
         obscureText: obscureText,
         style: TextStyle(fontSize: ScreenAdapter.fontSize(48)),
         keyboardType: inputType,

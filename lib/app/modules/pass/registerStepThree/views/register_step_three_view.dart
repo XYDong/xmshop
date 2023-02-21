@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/message.dart';
 import 'package:xmshop/app/widgets/logo_view.dart';
 import 'package:xmshop/app/widgets/passTextField.dart';
 
@@ -28,6 +29,7 @@ class RegisterStepThreeView extends GetView<RegisterStepThreeController> {
           PassTextField(
               obscureText: true,
               hintText: "请输入密码",
+              controller: controller.pwdEditingController1,
               inputType: TextInputType.text,
               onChanged: (value) {
                 print(value);
@@ -36,6 +38,7 @@ class RegisterStepThreeView extends GetView<RegisterStepThreeController> {
           PassTextField(
               obscureText: true,
               inputType: TextInputType.text,
+              controller: controller.pwdEditingController2,
               hintText: "请输入确认密码",
               onChanged: (value) {
                 print(value);
@@ -44,8 +47,14 @@ class RegisterStepThreeView extends GetView<RegisterStepThreeController> {
           SizedBox(height: ScreenAdapter.height(20)),
           PassButton(
               btnStr: "完成注册",
-              onPress: () {
-                print("完成注册");
+              onPress: () async {
+                MessageModel result = await controller.doRegister();
+                if (result.success == true) {
+                  // 执行跳转 offAllNamed controller不会出问题
+                  Get.offAllNamed('/tabs', arguments: {'initialPage': 4});
+                } else {
+                  Get.snackbar('提示', result.message);
+                }
               }),
         ],
       ),

@@ -17,10 +17,16 @@ class TabsController extends GetxController {
     const UserView(),
   ];
   // 页面左右切换
-  final PageController pageController = PageController(initialPage: 0);
+  PageController pageController = Get.arguments != null
+      ? PageController(initialPage: Get.arguments["initialPage"])
+      : PageController(initialPage: 0);
 
   @override
   void onInit() {
+    if (Get.arguments != null) {
+      currentIndex.value = Get.arguments["initialPage"];
+      update();
+    }
     super.onInit();
   }
 

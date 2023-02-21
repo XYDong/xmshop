@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:xmshop/app/services/screenAdapter.dart';
+import 'package:xmshop/app/widgets/passButton.dart';
 
 import '../controllers/user_controller.dart';
 
@@ -39,42 +40,95 @@ class UserView extends GetView<UserController> {
           padding: EdgeInsets.all(ScreenAdapter.height(20)),
           children: [
             // 用户头像 登录注册
-            Container(
-              margin: EdgeInsets.all(ScreenAdapter.width(20)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: ScreenAdapter.width(150),
-                    height: ScreenAdapter.height(150),
-                    child: CircleAvatar(
-                      radius: ScreenAdapter.width(75),
-                      backgroundImage:
-                          const AssetImage('assets/images/user.png'),
+            Obx(() => controller.isLogin.value
+                ? Container(
+                    margin: EdgeInsets.all(ScreenAdapter.width(20)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: ScreenAdapter.width(150),
+                          height: ScreenAdapter.height(150),
+                          child: CircleAvatar(
+                            radius: ScreenAdapter.width(75),
+                            backgroundImage:
+                                // const AssetImage('assets/images/user.png'),
+                                const AssetImage('assets/images/user.png'),
+                          ),
+                        ),
+                        SizedBox(
+                          width: ScreenAdapter.width(40),
+                        ),
+                        InkWell(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${controller.userInfoList[0]['username']}',
+                                  style: TextStyle(
+                                      fontSize: ScreenAdapter.fontSize(46)),
+                                ),
+                                SizedBox(
+                                  height: ScreenAdapter.height(10),
+                                ),
+                                Text(
+                                  '普通会员',
+                                  style: TextStyle(
+                                      fontSize: ScreenAdapter.fontSize(46)),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              Get.toNamed('/code-login-step-one');
+                            }),
+                        SizedBox(
+                          width: ScreenAdapter.width(40),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: ScreenAdapter.fontSize(34),
+                          color: Colors.black54,
+                        )
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    width: ScreenAdapter.width(40),
-                  ),
-                  InkWell(
-                      child: Text(
-                        '登录/注册',
-                        style: TextStyle(fontSize: ScreenAdapter.fontSize(46)),
-                      ),
-                      onTap: () {
-                        Get.toNamed('/code-login-step-one');
-                      }),
-                  SizedBox(
-                    width: ScreenAdapter.width(40),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: ScreenAdapter.fontSize(34),
-                    color: Colors.black54,
                   )
-                ],
-              ),
-            ),
+                : Container(
+                    margin: EdgeInsets.all(ScreenAdapter.width(20)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: ScreenAdapter.width(150),
+                          height: ScreenAdapter.height(150),
+                          child: CircleAvatar(
+                            radius: ScreenAdapter.width(75),
+                            backgroundImage:
+                                const AssetImage('assets/images/user.png'),
+                          ),
+                        ),
+                        SizedBox(
+                          width: ScreenAdapter.width(40),
+                        ),
+                        InkWell(
+                            child: Text(
+                              '登录/注册',
+                              style: TextStyle(
+                                  fontSize: ScreenAdapter.fontSize(46)),
+                            ),
+                            onTap: () {
+                              Get.toNamed('/code-login-step-one');
+                            }),
+                        SizedBox(
+                          width: ScreenAdapter.width(40),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: ScreenAdapter.fontSize(34),
+                          color: Colors.black54,
+                        )
+                      ],
+                    ),
+                  )),
             // 钱包
             Container(
               height: ScreenAdapter.height(200),
@@ -438,6 +492,13 @@ class UserView extends GetView<UserController> {
                         BorderRadius.circular(ScreenAdapter.width(20))),
               ),
             ),
+
+            PassButton(
+              btnStr: '退出登录',
+              onPress: () {
+                controller.loginOut();
+              },
+            )
           ],
         ),
       ),
