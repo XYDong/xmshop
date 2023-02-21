@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/modules/user/controllers/user_controller.dart';
 import 'package:xmshop/app/services/httpsClient.dart';
 
 import '../../../../models/message.dart';
@@ -15,6 +16,8 @@ class CodeLoginStepTwoController extends GetxController {
 
   RxInt seconds = 10.obs;
 
+  UserController userController = Get.find();
+
   @override
   void onInit() {
     super.onInit();
@@ -23,6 +26,8 @@ class CodeLoginStepTwoController extends GetxController {
 
   @override
   void onClose() {
+    // 更新用户状态
+    userController.getUserInfo();
     super.onClose();
   }
 

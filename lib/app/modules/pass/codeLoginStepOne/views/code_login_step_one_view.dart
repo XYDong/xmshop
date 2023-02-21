@@ -44,13 +44,14 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
             //     }),
             const UserAgreement(),
             PassButton(
-              btnStr: '登录',
+              btnStr: '获取验证码',
               onPress: () async {
-                print('登录');
+                print('获取验证码');
                 // Get.toNamed('/code-login-step-two');
                 MessageModel result = await controller.sendCode();
                 if (result.success) {
-                  Get.toNamed('/code-login-step-two',
+                  // 替换路由
+                  Get.offAndToNamed('/code-login-step-two',
                       arguments: {'tel': controller.telController.text});
                 } else {
                   Get.snackbar("提示", result.message);
