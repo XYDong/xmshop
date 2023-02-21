@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/user_model.dart';
 import 'package:xmshop/app/services/userServices.dart';
 
 import '../../../services/JokerIcons.dart';
@@ -49,7 +50,8 @@ class UserController extends GetxController {
 
   RxBool isLogin = false.obs;
 
-  RxList userInfoList = [].obs;
+  // RxList userInfoList = [].obs;
+  Rx<UserModel> userInfo = UserModel().obs;
 
   @override
   void onInit() {
@@ -71,7 +73,7 @@ class UserController extends GetxController {
     isLogin.value = await UserServices.getUserLoginState();
     var tempList = await UserServices.getUserInfo();
     if (tempList != []) {
-      userInfoList.value = tempList;
+      userInfo.value = UserModel.fromJson(tempList[0]);
     }
     update();
   }
@@ -79,7 +81,7 @@ class UserController extends GetxController {
   void loginOut() {
     UserServices.loginOut();
     isLogin.value = false;
-    userInfoList.value = [];
+    userInfo.value = UserModel();
     update();
   }
 }

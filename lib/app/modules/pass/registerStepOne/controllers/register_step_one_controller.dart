@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
@@ -5,8 +6,7 @@ import '../../../../services/httpsClient.dart';
 
 class RegisterStepOneController extends GetxController {
   HttpsClient httpsClient = HttpsClient();
-  // 输入的手机号
-  RxString phone = ''.obs;
+  TextEditingController telController = TextEditingController();
   @override
   void onInit() {
     super.onInit();
@@ -18,11 +18,11 @@ class RegisterStepOneController extends GetxController {
   }
 
   Future<bool> sendCode() async {
-    print('tel:${phone.value}');
+    print('tel:${telController.text}');
     // 验证手机号合法性
-    if (GetUtils.isPhoneNumber(phone.value)) {
-      var response =
-          await httpsClient.post('api/sendCode', data: {'tel': phone.value});
+    if (GetUtils.isPhoneNumber(telController.text)) {
+      var response = await httpsClient
+          .post('api/sendCode', data: {'tel': telController.text});
       print(response);
       if (response != null) {
         //测试：把验证码复制到剪切板上面，正式上线不需要这句话,这个为了方便测试

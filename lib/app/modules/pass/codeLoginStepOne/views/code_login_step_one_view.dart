@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/message.dart';
 import 'package:xmshop/app/services/screenAdapter.dart';
 import 'package:xmshop/app/widgets/logo_view.dart';
 import 'package:xmshop/app/widgets/passButton.dart';
@@ -31,22 +32,29 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
           children: [
             const LogoView(),
             PassTextField(
+                controller: controller.telController,
                 hintText: '请输入手机号码',
                 onChanged: (value) {
                   print('请输入手机号码:$value');
                 }),
-            PassTextField(
-                hintText: '请输入密码',
-                onChanged: (value) {
-                  print('请输入密码:$value');
-                }),
+            // PassTextField(
+            //     hintText: '请输入密码',
+            //     onChanged: (value) {
+            //       print('请输入密码:$value');
+            //     }),
             const UserAgreement(),
             PassButton(
               btnStr: '登录',
-              onPress: () {
+              onPress: () async {
                 print('登录');
-                Get.toNamed("/code-login-step-two");
                 // Get.toNamed('/code-login-step-two');
+                MessageModel result = await controller.sendCode();
+                if (result.success) {
+                  Get.toNamed('/code-login-step-two',
+                      arguments: {'tel': controller.telController.text});
+                } else {
+                  Get.snackbar("提示", result.message);
+                }
               },
             ),
             Row(
@@ -56,12 +64,12 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
                     onPressed: () {
                       Get.toNamed("/register-step-one");
                     },
-                    child: Text("新用户注册")),
+                    child: const Text("新用户注册")),
                 TextButton(
                     onPressed: () {
                       Get.toNamed("/pass-login");
                     },
-                    child: Text("账户密码登录"))
+                    child: const Text("账户密码登录"))
               ],
             )
           ],

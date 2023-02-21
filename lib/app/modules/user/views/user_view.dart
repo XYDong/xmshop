@@ -35,7 +35,7 @@ class UserView extends GetView<UserController> {
         ],
       ),
       body: Container(
-        color: Colors.red,
+        color: Colors.black12,
         child: ListView(
           padding: EdgeInsets.all(ScreenAdapter.height(20)),
           children: [
@@ -64,7 +64,7 @@ class UserView extends GetView<UserController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${controller.userInfoList[0]['username']}',
+                                  '${controller.userInfo.value.username}',
                                   style: TextStyle(
                                       fontSize: ScreenAdapter.fontSize(46)),
                                 ),
@@ -226,7 +226,7 @@ class UserView extends GetView<UserController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.bookmarks_outlined),
+                        const Icon(Icons.bookmarks_outlined),
                         SizedBox(
                           height: ScreenAdapter.height(10),
                         ),
@@ -437,15 +437,15 @@ class UserView extends GetView<UserController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         '服务',
                         style: TextStyle(
                             color: Colors.black87, fontWeight: FontWeight.bold),
                       ),
                       Row(
                         children: [
-                          Text('查看更多'),
-                          Icon(Icons.chevron_right_outlined)
+                          const Text('查看更多'),
+                          const Icon(Icons.chevron_right_outlined)
                         ],
                       ),
                     ],

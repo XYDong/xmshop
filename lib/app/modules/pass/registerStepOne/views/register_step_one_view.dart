@@ -30,20 +30,18 @@ class RegisterStepOneView extends GetView<RegisterStepOneController> {
           children: [
             const LogoView(),
             PassTextField(
-                hintText: '请输入手机号码',
-                onChanged: (value) async {
-                  controller.phone.value = value;
-                  print('请输入手机号码:$value');
-                }),
+              hintText: '请输入手机号码',
+              controller: controller.telController,
+            ),
             PassButton(
                 btnStr: "下一步",
                 onPress: () async {
-                  if (GetUtils.isPhoneNumber(controller.phone.value) &&
-                      controller.phone.value.length == 11) {
+                  if (GetUtils.isPhoneNumber(controller.telController.text) &&
+                      controller.telController.text.length == 11) {
                     var flag = await controller.sendCode();
                     if (flag) {
                       Get.toNamed("/register-step-two",
-                          arguments: {"tel": controller.phone.value});
+                          arguments: {"tel": controller.telController.text});
                     } else {
                       Get.snackbar("提示信息!", "网络异常");
                     }
