@@ -58,41 +58,50 @@ class CheckoutView extends GetView<CheckoutController> {
     return ListView(
       padding: EdgeInsets.all(ScreenAdapter.width(40)),
       children: [
-        Container(
-          padding: EdgeInsets.only(
-              top: ScreenAdapter.height(20), bottom: ScreenAdapter.height(20)),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-          child: const ListTile(
-            leading: Icon(Icons.add_location),
-            title: Text("增加收货地址"),
-            trailing: Icon(Icons.navigate_next),
-          ),
-        ),
-        SizedBox(
-          height: ScreenAdapter.height(40),
-        ),
-        Container(
-          padding: EdgeInsets.only(
-              top: ScreenAdapter.height(20), bottom: ScreenAdapter.height(20)),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-          child: ListTile(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("张三 15201681234"),
-                SizedBox(
-                  height: ScreenAdapter.height(10),
+        Obx(() => controller.addressList.isEmpty
+            ? Container(
+                padding: EdgeInsets.only(
+                    top: ScreenAdapter.height(20),
+                    bottom: ScreenAdapter.height(20)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(ScreenAdapter.width(20))),
+                child: ListTile(
+                  onTap: () {
+                    Get.toNamed('/address-add');
+                  },
+                  leading: const Icon(Icons.add_location),
+                  title: const Text("增加收货地址"),
+                  trailing: const Icon(Icons.navigate_next),
                 ),
-                const Text("北京市海淀区西二旗"),
-              ],
-            ),
-            trailing: const Icon(Icons.navigate_next),
-          ),
-        ),
+              )
+            : Container(
+                padding: EdgeInsets.only(
+                    top: ScreenAdapter.height(20),
+                    bottom: ScreenAdapter.height(20)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(ScreenAdapter.width(20))),
+                child: ListTile(
+                  onTap: () {
+                    Get.toNamed('/address-list');
+                  },
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          "${controller.addressList[0].name}   ${controller.addressList[0].phone}"),
+                      SizedBox(
+                        height: ScreenAdapter.height(10),
+                      ),
+                      Text("${controller.addressList[0].address}"),
+                    ],
+                  ),
+                  trailing: const Icon(Icons.navigate_next),
+                ),
+              )),
         SizedBox(
           height: ScreenAdapter.height(40),
         ),

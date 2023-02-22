@@ -22,6 +22,10 @@ dependencies:
   flutter_html: ^3.0.0-alpha.6
 #  验证码输入框
   pin_code_fields: ^7.4.0
+#  城市选择
+  city_pickers: ^1.2.1
+#  数据加密
+  crypto: ^3.0.2
 
   flutter: 
     sdk: flutter
