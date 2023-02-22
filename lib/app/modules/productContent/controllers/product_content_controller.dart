@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xmshop/app/models/pcontent_model.dart';
+import 'package:xmshop/app/modules/cart/controllers/cart_controller.dart';
 import 'package:xmshop/app/services/httpsClient.dart';
 import 'package:xmshop/app/services/screenAdapter.dart';
 
@@ -65,6 +66,8 @@ class ProductContentController extends GetxController {
 
   // 加入购物车或者购买的数量
   RxInt buyNum = 1.obs;
+
+  CartController cartController = Get.find();
 
   @override
   void onInit() {
@@ -246,6 +249,9 @@ class ProductContentController extends GetxController {
     print('加入购物车:商品数量：${buyNum.value}');
     getSelectedAttr();
     CartServers.addCart(pContentData.value, selectedAttr.value, buyNum.value);
+    if (cartController.initialized) {
+      cartController.getCartListData();
+    }
     Get.back();
     Get.snackbar('提示', '加入购物车成功',
         duration: const Duration(seconds: 2), snackPosition: SnackPosition.TOP);

@@ -14,6 +14,11 @@ class CartController extends GetxController {
   // 是否全选
   RxBool checkedAll = false.obs;
 
+  // 商品总价
+  RxDouble allPrice = 0.0.obs;
+  // 商品总数
+  RxInt allCount = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -29,6 +34,7 @@ class CartController extends GetxController {
     var tempList = await CartServers.getCartData();
     cartList.value = tempList!;
     checkedAll.value = isCheckedAll();
+    computedAllPrice();
     update();
   }
 
@@ -51,6 +57,7 @@ class CartController extends GetxController {
     // 更新缓存数据
     CartServers.setCartListData(cartList);
     checkedAll.value = isCheckedAll();
+    computedAllPrice();
     update();
   }
 
@@ -68,6 +75,7 @@ class CartController extends GetxController {
     // 更新缓存数据
     CartServers.setCartListData(cartList);
     checkedAll.value = isCheckedAll();
+    computedAllPrice();
     update();
   }
 
@@ -123,6 +131,7 @@ class CartController extends GetxController {
   checkout() async {
     bool loginState = await isLogin();
     List checkListData = getCheckListData();
+    computedAllPrice();
     if (loginState) {
       //判断购物车里面有没有要结算的商品
       if (checkListData.isNotEmpty) {
@@ -147,6 +156,21 @@ class CartController extends GetxController {
     }
     cartList.value = tempList;
     CartServers.setCartListData(tempList);
+    computedAllPrice();
     update();
+  }
+
+  // 计算总价
+  computedAllPrice() {
+    double tempAllPrice = 0.0;
+    int tempAllCount = 0;
+    for (var i = 0; i < cartList.length; i++) {
+      if (cartList[i]["checked"] == true) {
+        tempAllPrice += (cartList[i]['price'] * cartList[i]['count']);
+        tempAllCount += cartList[i]['count'] as int;
+      }
+    }
+    allPrice.value = tempAllPrice;
+    allCount.value = tempAllCount;
   }
 }

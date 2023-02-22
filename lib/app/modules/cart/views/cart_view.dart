@@ -85,11 +85,13 @@ class CartView extends GetView {
                               ),
                               Row(
                                 children: [
-                                  const Text("合计: "),
-                                  Text("¥98.9",
+                                  Obx(() =>
+                                      Text("共${controller.allCount}件  合计: ")),
+                                  Obx(() => Text(
+                                      "¥${controller.allPrice.value}",
                                       style: TextStyle(
                                           fontSize: ScreenAdapter.fontSize(58),
-                                          color: Colors.red)),
+                                          color: Colors.red))),
                                   SizedBox(width: ScreenAdapter.width(20)),
                                   Obx(() => controller.isEdit.value
                                       ? ElevatedButton(

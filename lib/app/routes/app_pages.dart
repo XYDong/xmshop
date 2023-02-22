@@ -23,6 +23,8 @@ import '../modules/pass/registerStepThree/bindings/register_step_three_binding.d
 import '../modules/pass/registerStepThree/views/register_step_three_view.dart';
 import '../modules/pass/registerStepTwo/bindings/register_step_two_binding.dart';
 import '../modules/pass/registerStepTwo/views/register_step_two_view.dart';
+import '../modules/pay/bindings/pay_binding.dart';
+import '../modules/pay/views/pay_view.dart';
 import '../modules/productContent/bindings/product_content_binding.dart';
 import '../modules/productContent/views/product_content_view.dart';
 import '../modules/productList/bindings/product_list_binding.dart';
@@ -145,6 +147,11 @@ class AppPages {
       name: _Paths.ADDRESS_EDIT,
       page: () => const AddressEditView(),
       binding: AddressEditBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAY,
+      page: () => const PayView(),
+      binding: PayBinding(),
     ),
   ];
 }

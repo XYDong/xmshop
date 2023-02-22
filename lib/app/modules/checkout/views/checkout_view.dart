@@ -191,11 +191,11 @@ class CheckoutView extends GetView<CheckoutController> {
               Row(
                 children: [
                   SizedBox(width: ScreenAdapter.width(20)),
-                  const Text("共1件,合计:"),
-                  Text("¥699",
+                  Obx(() => Text("共${controller.allCount}件,合计:")),
+                  Obx(() => Text("¥${controller.allPrice}",
                       style: TextStyle(
                           fontSize: ScreenAdapter.fontSize(58),
-                          color: Colors.red)),
+                          color: Colors.red))),
                   SizedBox(width: ScreenAdapter.width(20)),
                 ],
               ),
@@ -211,7 +211,8 @@ class CheckoutView extends GetView<CheckoutController> {
                   onPressed: () async {
                     // //判断用户有没有登录
                     if (await UserServices.getUserLoginState()) {
-                      Get.toNamed("/checkout");
+                      // Get.toNamed("/checkout");
+                      controller.doCheckOut();
                     } else {
                       Get.offAndToNamed('/code-login-step-view');
                     }
