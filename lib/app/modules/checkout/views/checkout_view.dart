@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/services/httpsClient.dart';
 import 'package:xmshop/app/services/screenAdapter.dart';
 import 'package:xmshop/app/services/userServices.dart';
 
@@ -8,7 +9,7 @@ import '../controllers/checkout_controller.dart';
 class CheckoutView extends GetView<CheckoutController> {
   const CheckoutView({Key? key}) : super(key: key);
 
-  Widget _checkoutItem() {
+  Widget _checkoutItem(value) {
     return Container(
       padding: EdgeInsets.only(
           top: ScreenAdapter.height(20),
@@ -21,25 +22,29 @@ class CheckoutView extends GetView<CheckoutController> {
             width: ScreenAdapter.width(200),
             height: ScreenAdapter.width(200),
             padding: EdgeInsets.all(ScreenAdapter.width(20)),
-            child: Image.network("https://www.itying.com/images/shouji.png",
+            // child: Image.network("https://www.itying.com/images/shouji.png",
+            //     fit: BoxFit.fitHeight),
+            child: Image.network(HttpsClient.replaceUri(value['pic']),
                 fit: BoxFit.fitHeight),
           ),
           Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "小米5A",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                "${value['title']}",
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: ScreenAdapter.height(10)),
-              const Text("白色 128GB"),
+              Text("${value['selectedAttr']}"),
               SizedBox(height: ScreenAdapter.height(10)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("￥121", style: TextStyle(color: Colors.red)),
-                  Text("x2", style: TextStyle(color: Colors.black87))
+                children: [
+                  Text("￥${value['price']}元",
+                      style: const TextStyle(color: Colors.red)),
+                  Text("x${value['count']}",
+                      style: const TextStyle(color: Colors.black87))
                 ],
               )
             ],
@@ -78,14 +83,14 @@ class CheckoutView extends GetView<CheckoutController> {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("张三 15201681234"),
+                const Text("张三 15201681234"),
                 SizedBox(
                   height: ScreenAdapter.height(10),
                 ),
-                Text("北京市海淀区西二旗"),
+                const Text("北京市海淀区西二旗"),
               ],
             ),
-            trailing: Icon(Icons.navigate_next),
+            trailing: const Icon(Icons.navigate_next),
           ),
         ),
         SizedBox(
@@ -97,15 +102,15 @@ class CheckoutView extends GetView<CheckoutController> {
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-          child: Column(
-            children: [
-              _checkoutItem(),
-              _checkoutItem(),
-              _checkoutItem(),
-              _checkoutItem(),
-              _checkoutItem()
-            ],
-          ),
+          child: Obx(() => controller.checkOutList.isNotEmpty
+              ? Column(
+                  children: controller.checkOutList
+                      .map(
+                        (element) => _checkoutItem(element),
+                      )
+                      .toList(),
+                )
+              : const SizedBox()),
         ),
         SizedBox(
           height: ScreenAdapter.height(40),
@@ -121,7 +126,7 @@ class CheckoutView extends GetView<CheckoutController> {
               ListTile(
                   title: const Text("运费"),
                   trailing: Wrap(
-                    children: [Text("包邮")],
+                    children: [const Text("包邮")],
                   )),
               ListTile(
                 title: const Text("优惠券"),

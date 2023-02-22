@@ -24,17 +24,15 @@ class CartItemView extends GetView {
       ),
       child: Row(
         children: [
-          Obx(() => controller.showEdit.value
-              ? SizedBox(
-                  width: ScreenAdapter.width(100),
-                  child: Checkbox(
-                      activeColor: Colors.red,
-                      value: cartItem['checked'],
-                      onChanged: (value) {
-                        controller.checkCartItem(cartItem);
-                      }),
-                )
-              : const SizedBox()),
+          SizedBox(
+            width: ScreenAdapter.width(100),
+            child: Checkbox(
+                activeColor: Colors.red,
+                value: cartItem['checked'],
+                onChanged: (value) {
+                  controller.checkCartItem(cartItem);
+                }),
+          ),
           Container(
             width: ScreenAdapter.width(260),
             padding: EdgeInsets.all(ScreenAdapter.height(24)),

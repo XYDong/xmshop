@@ -20,14 +20,23 @@ class CartView extends GetView {
         title: const Text('购物车'),
         centerTitle: true,
         actions: [
-          Obx(() => TextButton(
-              onPressed: () {
-                controller.changeShowEdit();
-              },
-              child: Text(
-                controller.showEdit.value ? "取消编辑" : "编辑",
-                style: const TextStyle(color: Colors.black87),
-              )))
+          Obx(() => controller.isEdit.value
+              ? TextButton(
+                  onPressed: () {
+                    controller.changeIsEdit();
+                  },
+                  child: const Text(
+                    "删除",
+                    style: TextStyle(color: Colors.black87),
+                  ))
+              : TextButton(
+                  onPressed: () {
+                    controller.changeIsEdit();
+                  },
+                  child: const Text(
+                    "编辑",
+                    style: TextStyle(color: Colors.black87),
+                  )))
         ],
       ),
       body: GetBuilder<CartController>(
@@ -82,26 +91,39 @@ class CartView extends GetView {
                                           fontSize: ScreenAdapter.fontSize(58),
                                           color: Colors.red)),
                                   SizedBox(width: ScreenAdapter.width(20)),
-                                  ElevatedButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
+                                  Obx(() => controller.isEdit.value
+                                      ? ElevatedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all(
                                                   const Color.fromRGBO(
-                                                      255, 165, 0, 0.9)),
-                                          foregroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.white),
-                                          shape: MaterialStateProperty.all(
-                                              // CircleBorder()
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)))),
-                                      onPressed: () async {
-                                        //判断用户有没有登录
-                                        controller.checkout();
-                                      },
-                                      child: const Text("结算"))
+                                                      227, 15, 15, 1.0)),
+                                              foregroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.white),
+                                              shape: MaterialStateProperty.all(
+                                                  // CircleBorder()
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)))),
+                                          onPressed: () async {
+                                            //判断用户有没有登录
+                                            controller.deleteCartData();
+                                          },
+                                          child: const Text("删除"))
+                                      : ElevatedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all(
+                                                  const Color.fromRGBO(255, 165, 0, 0.9)),
+                                              foregroundColor: MaterialStateProperty.all(Colors.white),
+                                              shape: MaterialStateProperty.all(
+                                                  // CircleBorder()
+                                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
+                                          onPressed: () async {
+                                            //判断用户有没有登录
+                                            controller.checkout();
+                                          },
+                                          child: const Text("结算")))
                                 ],
                               )
                             ],

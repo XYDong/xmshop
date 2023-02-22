@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import 'package:xmshop/app/services/cartServers.dart';
 
+import '../../../services/cartServers.dart';
+import '../../../services/storage.dart';
 import '../../../services/userServices.dart';
 
 class CartController extends GetxController {
@@ -8,7 +9,7 @@ class CartController extends GetxController {
   RxList cartList = [].obs;
 
   // 是否编辑
-  RxBool showEdit = false.obs;
+  RxBool isEdit = false.obs;
 
   // 是否全选
   RxBool checkedAll = false.obs;
@@ -98,8 +99,8 @@ class CartController extends GetxController {
   }
 
   // 更改编辑
-  void changeShowEdit() {
-    showEdit.value = !showEdit.value;
+  void changeIsEdit() {
+    isEdit.value = !isEdit.value;
     update();
   }
 
@@ -125,6 +126,7 @@ class CartController extends GetxController {
     if (loginState) {
       //判断购物车里面有没有要结算的商品
       if (checkListData.isNotEmpty) {
+        Storage.setData('checkoutList', checkListData);
         Get.toNamed("/checkout");
       } else {
         Get.snackbar("提示信息!", "购物车中没有要结算的商品");
@@ -134,5 +136,17 @@ class CartController extends GetxController {
       Get.toNamed("/code-login-step-one");
       Get.snackbar("提示信息!", "您还有没有登录，请先登录");
     }
+  }
+
+  deleteCartData() {
+    List tempList = [];
+    for (var i = 0; i < cartList.length; i++) {
+      if (cartList[i]["checked"] == false) {
+        tempList.add(cartList[i]);
+      }
+    }
+    cartList.value = tempList;
+    CartServers.setCartListData(tempList);
+    update();
   }
 }

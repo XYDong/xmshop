@@ -5,6 +5,8 @@ import 'package:xmshop/app/services/httpsClient.dart';
 import 'package:xmshop/app/services/screenAdapter.dart';
 
 import '../../../services/cartServers.dart';
+import '../../../services/storage.dart';
+import '../../../services/userServices.dart';
 
 class ProductContentController extends GetxController {
   ScrollController scrollController = ScrollController();
@@ -250,9 +252,34 @@ class ProductContentController extends GetxController {
   }
 
   /// 立即购买
-  buyNow() {
+  buyNow() async {
     print('立即购买:商品数量：${buyNum.value}');
     getSelectedAttr();
     Get.back();
+    if (await isLogin()) {
+      // 保存商品信息
+      List tempList = [];
+      tempList.add({
+        "_id": pContentData.value.sId,
+        "title": pContentData.value.title,
+        "price": pContentData.value.price,
+        "selectedAttr": selectedAttr.value,
+        "count": buyNum.value,
+        "pic": pContentData.value.pic,
+        "checked": true
+      });
+      Storage.setData("checkoutList", tempList);
+      //执行跳转
+      Get.toNamed("/checkout");
+    } else {
+      //执行跳转
+      Get.toNamed("/code-login-step-one");
+      Get.snackbar("提示信息!", "您还有没有登录，请先登录");
+    }
+  }
+
+  //判断用户有没有登录
+  Future<bool> isLogin() async {
+    return await UserServices.getUserLoginState();
   }
 }
