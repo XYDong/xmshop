@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import '../controllers/give_controller.dart';
@@ -10,10 +9,12 @@ class GiveView extends GetView<GiveController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GiveView'),
+        backgroundColor: Colors.white,
+        title: const Text('服务'),
         centerTitle: true,
+        elevation: 0,
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'GiveView is working',
           style: TextStyle(fontSize: 20),

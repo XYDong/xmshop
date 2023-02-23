@@ -26,6 +26,8 @@ dependencies:
   city_pickers: ^1.2.1
 #  数据加密
   crypto: ^3.0.2
+#  极光推送
+  jpush_flutter: ^2.4.1
 
   flutter: 
     sdk: flutter

@@ -10,7 +10,6 @@ void main() {
   SystemUiOverlayStyle systemUiOverlayStyle =
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-
   // ScreenUtilInit 屏幕适配
   runApp(ScreenUtilInit(
     designSize: const Size(1080, 2400), //设计稿的宽高
