@@ -405,12 +405,17 @@ class UserView extends GetView<UserController> {
                               SizedBox(
                                 height: ScreenAdapter.height(10),
                               ),
-                              Text(
-                                '全部订单',
-                                style: TextStyle(
-                                    fontSize: ScreenAdapter.fontSize(42),
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w600),
+                              InkWell(
+                                child: Text(
+                                  '全部订单',
+                                  style: TextStyle(
+                                      fontSize: ScreenAdapter.fontSize(42),
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                onTap: () {
+                                  Get.toNamed('/order');
+                                },
                               ),
                             ],
                           ),

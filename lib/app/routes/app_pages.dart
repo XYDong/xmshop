@@ -9,6 +9,10 @@ import '../modules/address/addressList/views/address_list_view.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
+import '../modules/order/bindings/order_binding.dart';
+import '../modules/order/views/order_view.dart';
+import '../modules/orderInfo/bindings/order_info_binding.dart';
+import '../modules/orderInfo/views/order_info_view.dart';
 import '../modules/pass/codeLoginStepOne/bindings/code_login_step_one_binding.dart';
 import '../modules/pass/codeLoginStepOne/views/code_login_step_one_view.dart';
 import '../modules/pass/codeLoginStepTwo/bindings/code_login_step_two_binding.dart';
@@ -152,6 +156,16 @@ class AppPages {
       name: _Paths.PAY,
       page: () => const PayView(),
       binding: PayBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER,
+      page: () => const OrderView(),
+      binding: OrderBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_INFO,
+      page: () => const OrderInfoView(),
+      binding: OrderInfoBinding(),
     ),
   ];
 }
