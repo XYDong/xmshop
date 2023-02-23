@@ -29,6 +29,9 @@ dependencies:
 #  极光推送
   jpush_flutter: ^2.4.1
 
+  flutter_localizations:
+    sdk: flutter
+
   flutter: 
     sdk: flutter
 
