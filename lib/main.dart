@@ -29,8 +29,9 @@ void main() {
 
         // 配置国际化
         localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
           Locale('zh', 'CH'),

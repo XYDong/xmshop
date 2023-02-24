@@ -28,6 +28,8 @@ dependencies:
   crypto: ^3.0.2
 #  极光推送
   jpush_flutter: ^2.4.1
+#  指纹和人脸识别认证
+  local_auth: ^2.1.5
 
   flutter_localizations:
     sdk: flutter

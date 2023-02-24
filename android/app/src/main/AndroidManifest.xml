@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.joker.xmshop">
-   <application
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+<!--    你要用上面那个权限 它会提示说过时了 安卓P以上换了一个 反正我minSDK也在p以上就换成了它推荐的 毕竟听人劝吃饱饭-->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <application
         android:label="xmshop"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
